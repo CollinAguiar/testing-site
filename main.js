@@ -1,251 +1,108 @@
-let lastScroll = 0;
-const navbar = document.getElementById('navbar');
-const footer = document.getElementById('footer');
-window.addEventListener('scroll', () => {
-  const currentScroll = window.pageYOffset;
-  if (currentScroll <= 0) {
-    navbar.classList.remove('hide');
-    footer.style.display = 'none';
-    return;
-  }
-  if (currentScroll > lastScroll) {
-    navbar.classList.add('hide');
-    footer.style.display = 'block';
-  } else {
-    navbar.classList.remove('hide');
-    footer.style.display = 'none';
-  }
-  lastScroll = currentScroll;
-});
-
-// Fade-up animation on scroll
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) e.target.classList.add('is-visible');
-  });
-});
-document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
-
-// Vanilla Tilt for bubbles
-VanillaTilt.init(document.querySelectorAll('.bubble'), {
+VanillaTilt.init(document.querySelectorAll(".card"), {
   max: 10,
   speed: 400,
   glare: true,
-  'max-glare': 0.3,
-  scale: 1.05
-});
+  "max-glare": 0.2
+})
 
-// Matrix background animation
-const matrix = document.getElementById('matrix');
-const ctx = matrix.getContext('2d');
-let w, h;
-const fontSize = 14;
-let columns;
-let drops;
+const nav = document.getElementById("navbar")
+let lastScrollY = window.scrollY
 
-function resizeMatrix() {
-  w = matrix.width = window.innerWidth;
-  h = matrix.height = window.innerHeight;
-  columns = Math.floor(w / fontSize);
-  drops = Array(columns).fill(1);
+window.addEventListener("scroll", () => {
+  if (window.scrollY > lastScrollY) {
+    nav.style.top = "-80px"
+  } else {
+    nav.style.top = "0"
+  }
+  lastScrollY = window.scrollY
+})
+
+function expandCard(card) {
+  const isExpanded = card.classList.contains("expanded")
+  document.querySelectorAll(".card").forEach(c => c.classList.remove("expanded"))
+  if (!isExpanded) card.classList.add("expanded")
 }
-resizeMatrix();
-window.addEventListener('resize', resizeMatrix);
 
-const matrixChars = '01';
+function simulateScan() {
+  const target = document.getElementById("vulnTarget").value
+  const out = document.getElementById("vulnOutput")
+  out.textContent = `Scanning ${target}...
+Open Ports:
+ - 22 (SSH)
+ - 80 (HTTP)
+ - 443 (HTTPS)
+
+Detected Issues:
+ - Directory listing on /admin
+ - Outdated SSL certificate
+ - Weak SSH password policy
+`
+}
+
+function updateCryptoInputs() {
+  const method = document.getElementById("cryptoMethod").value
+  const keyInput = document.getElementById("cryptoKey")
+  keyInput.placeholder = method === "caesar" ? "Shift (1-26)" : "Keyword"
+}
+
+function encryptMessage() {
+  const method = document.getElementById("cryptoMethod").value
+  const key = document.getElementById("cryptoKey").value
+  const msg = document.getElementById("cryptoMessage").value
+  let out = ""
+
+  if (method === "caesar") {
+    const shift = parseInt(key) || 0
+    out = msg.replace(/[a-z]/gi, c => {
+      const base = c >= "a" ? 97 : 65
+      return String.fromCharCode((c.charCodeAt(0) - base + shift) % 26 + base)
+    })
+  } else if (method === "vigenere") {
+    let i = 0
+    out = msg.replace(/[a-z]/gi, c => {
+      const base = c >= "a" ? 97 : 65
+      const k = key[i++ % key.length].toLowerCase().charCodeAt(0) - 97
+      return String.fromCharCode((c.charCodeAt(0) - base + k) % 26 + base)
+    })
+  }
+
+  document.getElementById("cryptoResult").textContent = out
+}
+
+function startPacketAnimation() {
+  const packet = document.getElementById("packet1")
+  packet.style.transition = "left 3s ease-in-out"
+  packet.style.left = "90%"
+  setTimeout(() => {
+    packet.style.transition = "none"
+    packet.style.left = "0"
+  }, 4000)
+}
+
+const canvas = document.getElementById("matrix")
+const ctx = canvas.getContext("2d")
+let width, height, columns, drops
+
+function resizeCanvas() {
+  width = canvas.width = window.innerWidth
+  height = canvas.height = window.innerHeight
+  columns = Math.floor(width / 14)
+  drops = Array(columns).fill(1)
+}
+resizeCanvas()
+window.addEventListener("resize", resizeCanvas)
 
 function drawMatrix() {
-  ctx.fillStyle = 'rgba(0,0,0,0.05)';
-  ctx.fillRect(0, 0, w, h);
-  ctx.fillStyle = '#ff003c';
-  ctx.font = fontSize + 'px monospace';
+  ctx.fillStyle = "rgba(0, 0, 0, 0.05)"
+  ctx.fillRect(0, 0, width, height)
+  ctx.fillStyle = "#ff003c"
+  ctx.font = "14px monospace"
   for (let i = 0; i < drops.length; i++) {
-    const text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
-    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-    if (drops[i] * fontSize > h && Math.random() > 0.975) drops[i] = 0;
-    drops[i]++;
+    const text = "01"[Math.floor(Math.random() * 2)]
+    ctx.fillText(text, i * 14, drops[i] * 14)
+    if (drops[i] * 14 > height && Math.random() > 0.975) drops[i] = 0
+    drops[i]++
   }
-  requestAnimationFrame(drawMatrix);
+  requestAnimationFrame(drawMatrix)
 }
-drawMatrix();
-
-// Bubble expand/collapse logic
-const bubbles = document.querySelectorAll('.bubble');
-
-function closeBubble(bubble) {
-  bubble.classList.remove('expanded');
-  document.body.style.overflow = '';
-}
-
-function openBubble(bubble) {
-  bubbles.forEach(b => closeBubble(b));
-  bubble.classList.add('expanded');
-  bubble.focus();
-  document.body.style.overflow = 'hidden';
-}
-
-bubbles.forEach(bubble => {
-  bubble.addEventListener('click', e => {
-    if (!bubble.classList.contains('expanded') && !e.target.classList.contains('close-btn')) {
-      openBubble(bubble);
-    }
-  });
-  bubble.querySelector('.close-btn').addEventListener('click', e => {
-    e.stopPropagation();
-    closeBubble(bubble);
-  });
-  bubble.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      if (!bubble.classList.contains('expanded')) {
-        openBubble(bubble);
-      }
-    } else if (e.key === 'Escape') {
-      if (bubble.classList.contains('expanded')) {
-        closeBubble(bubble);
-      }
-    }
-  });
-});
-
-// Cryptography Playground logic
-const cryptoMethod = document.getElementById('crypto-method');
-const cryptoKey = document.getElementById('crypto-key');
-const keyLabel = document.getElementById('key-label');
-const cryptoInput = document.getElementById('crypto-input');
-const cryptoOutput = document.getElementById('crypto-output');
-const encryptBtn = document.getElementById('encrypt-btn');
-const decryptBtn = document.getElementById('decrypt-btn');
-
-function updateKeyLabel() {
-  if (!cryptoMethod || !cryptoKey || !keyLabel) return;
-  switch (cryptoMethod.value) {
-    case 'caesar':
-      keyLabel.textContent = 'Shift (1-26)';
-      cryptoKey.placeholder = 'Shift (1-26)';
-      break;
-    case 'aes':
-      keyLabel.textContent = 'Password';
-      cryptoKey.placeholder = 'Enter password';
-      break;
-    case 'base64':
-      keyLabel.textContent = 'No key needed';
-      cryptoKey.placeholder = '';
-      cryptoKey.value = '';
-      break;
-  }
-}
-cryptoMethod.addEventListener('change', updateKeyLabel);
-updateKeyLabel();
-
-function caesarShift(str, amount) {
-  if (amount < 0) amount = 26 + (amount % 26);
-  let output = '';
-  for (let i = 0; i < str.length; i++) {
-    let c = str.charCodeAt(i);
-    if (c >= 65 && c <= 90) {
-      output += String.fromCharCode(((c - 65 + amount) % 26) + 65);
-    } else if (c >= 97 && c <= 122) {
-      output += String.fromCharCode(((c - 97 + amount) % 26) + 97);
-    } else {
-      output += str.charAt(i);
-    }
-  }
-  return output;
-}
-
-function aesEncryptDecrypt(input, password, encrypt = true) {
-  if (!password) return '';
-  try {
-    if (encrypt) {
-      return CryptoJS.AES.encrypt(input, password).toString();
-    } else {
-      const bytes = CryptoJS.AES.decrypt(input, password);
-      return bytes.toString(CryptoJS.enc.Utf8);
-    }
-  } catch {
-    return '';
-  }
-}
-
-encryptBtn.addEventListener('click', () => {
-  let input = cryptoInput.value;
-  let key = cryptoKey.value;
-  if (!input) return;
-  switch (cryptoMethod.value) {
-    case 'caesar':
-      let shift = parseInt(key);
-      if (isNaN(shift) || shift < 1 || shift > 26) {
-        cryptoOutput.value = 'Invalid shift value';
-        return;
-      }
-      cryptoOutput.value = caesarShift(input, shift);
-      break;
-    case 'aes':
-      if (!key) {
-        cryptoOutput.value = 'Password required';
-        return;
-      }
-      cryptoOutput.value = aesEncryptDecrypt(input, key, true);
-      break;
-    case 'base64':
-      cryptoOutput.value = btoa(input);
-      break;
-  }
-});
-
-decryptBtn.addEventListener('click', () => {
-  let input = cryptoInput.value;
-  let key = cryptoKey.value;
-  if (!input) return;
-  switch (cryptoMethod.value) {
-    case 'caesar':
-      let shift = parseInt(key);
-      if (isNaN(shift) || shift < 1 || shift > 26) {
-        cryptoOutput.value = 'Invalid shift value';
-        return;
-      }
-      cryptoOutput.value = caesarShift(input, 26 - shift);
-      break;
-    case 'aes':
-      if (!key) {
-        cryptoOutput.value = 'Password required';
-        return;
-      }
-      cryptoOutput.value = aesEncryptDecrypt(input, key, false);
-      break;
-    case 'base64':
-      try {
-        cryptoOutput.value = atob(input);
-      } catch {
-        cryptoOutput.value = 'Invalid Base64 string';
-      }
-      break;
-  }
-});
-
-// Load CryptoJS from CDN for AES encryption
-const cryptoScript = document.createElement('script');
-cryptoScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js';
-document.head.appendChild(cryptoScript);
-
-// Network Visualizer animation
-const visualizerContainer = document.getElementById('network-visualizer');
-
-function createPacket() {
-  if (!visualizerContainer) return;
-  const packet = document.createElement('div');
-  packet.className = 'packet';
-  packet.style.left = Math.random() * 100 + '%';
-  packet.style.animationDuration = (3 + Math.random() * 2) + 's';
-  visualizerContainer.appendChild(packet);
-  setTimeout(() => {
-    packet.remove();
-  }, 5000);
-}
-
-function startVisualizer() {
-  setInterval(createPacket, 400);
-}
-
-startVisualizer();
+drawMatrix()
