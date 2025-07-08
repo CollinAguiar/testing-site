@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Collin Aguiar's Portfolio</title>
+  <title>Collin Aguiar | Cybersecurity Portfolio</title>
   <link rel="stylesheet" href="main.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.7.0/dist/vanilla-tilt.min.js"></script>
 </head>
 <body>
   <nav id="navbar">
-    <div class="logo"><i class="fas fa-shield-alt"></i> Collin Aguiar</div>
+    <div class="logo">Collin Aguiar</div>
     <div class="nav-links">
-      <a href="#about"><i class="fas fa-user"></i> About</a>
-      <a href="#projects"><i class="fas fa-code"></i> Projects</a>
-      <a href="#skills"><i class="fas fa-tools"></i> Skills</a>
-      <a href="#goals"><i class="fas fa-bullseye"></i> Goals</a>
-      <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#goals">Goals</a>
+      <a href="#contact">Contact</a>
     </div>
   </nav>
 
@@ -24,94 +24,116 @@
 
   <section class="hero">
     <h1 class="glitch" data-text="Collin Aguiar">Collin Aguiar</h1>
-    <p class="fade-up">I’m Collin, a high schooler with a deep interest in cybersecurity and coding. I spend my free time building projects, learning new programming concepts, and exploring digital security...</p>
+    <p class="hero-subtext">Aspiring Cybersecurity Engineer & Builder</p>
     <div class="cta-buttons">
-      <a href="#projects"><i class="fas fa-rocket"></i> View Projects</a>
-      <a href="mailto:collin.j.aguiar@gmail.com"><i class="fas fa-briefcase"></i> Contact Me</a>
+      <a href="#projects">View Projects</a>
+      <a href="mailto:collin.j.aguiar@gmail.com">Contact Me</a>
     </div>
   </section>
 
-  <div class="cards-wrapper">
-
-    <div class="card-preview" data-target="about">
-      <h3><i class="fas fa-user"></i> About Me</h3>
-      <p>I’m from Seekonk, MA. I've been building PCs and breaking into code since I was 13...</p>
-    </div>
-
-    <div class="card-preview" data-target="projects">
-      <h3><i class="fas fa-code"></i> Projects</h3>
-      <p>Scanalyzer, encrypted messaging tools, secure note storage, network sim lab...</p>
-    </div>
-
-    <div class="card-preview" data-target="skills">
-      <h3><i class="fas fa-tools"></i> Skills</h3>
-      <p>Python, Bash, Linux, Cryptography, Networking, Hardware...</p>
-    </div>
-
-    <div class="card-preview" data-target="goals">
-      <h3><i class="fas fa-bullseye"></i> Goals</h3>
-      <p>Intern in cybersecurity, contribute to OSS, deepen my networking stack knowledge...</p>
-    </div>
-
-    <div class="card-preview" data-target="contact">
-      <h3><i class="fas fa-envelope"></i> Contact</h3>
-      <p>Reach out via email or download my resume...</p>
-    </div>
-
-  </div>
-
-  <div class="card-modal" id="about">
-    <div class="modal-content">
-      <button class="close-btn">&times;</button>
+  <section id="about">
+    <div class="card preview" onclick="expandCard(this)">
       <h2>About Me</h2>
-      <p>I’m a 16-year-old student from Seekonk, MA. I’ve been passionate about technology ever since I built my first PC. I focus on cybersecurity, ethical hacking, and backend development.</p>
+      <p>I’m Collin, a high schooler with a deep interest in cybersecurity and coding. I spend my free time building projects, learning new programmin...</p>
+      <div class="full">
+        <p>I’m Collin, a high schooler with a deep interest in cybersecurity and coding. I spend my free time building projects, learning new programming techniques, and participating in security competitions. My interests include ethical hacking, networking, and Linux-based system administration. I’m constantly working to push my skills further and create tools that are both practical and secure.</p>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <div class="card-modal" id="projects">
-    <div class="modal-content">
-      <button class="close-btn">&times;</button>
-      <h2>Projects</h2>
-      <ul>
-        <li><strong>Scanalyzer</strong>: An in-depth scanner for networks and endpoints.</li>
-        <li><strong>Cryptography Playground</strong>: Try out AES, RSA, and other ciphers live.</li>
-        <li><strong>Network Visualizer</strong>: Simulates basic packet routing in JS.</li>
-        <li><strong>This Website</strong>: <a href="https://github.com/CollinAguiar/collinaguiar.github.io" target="_blank">GitHub Repo</a></li>
-      </ul>
+  <section id="projects">
+    <div class="card preview" onclick="expandCard(this)">
+      <h2>Vulnerability Scanner</h2>
+      <p>Tool to inspect and identify potential security issues in a system. Enter a target to see simulated output for ports, protocols, and weakne...</p>
+      <div class="full">
+        <input type="text" id="vulnTarget" placeholder="Enter URL or IP address" />
+        <button onclick="simulateScan()">Scan</button>
+        <pre id="vulnOutput"></pre>
+      </div>
     </div>
-  </div>
 
-  <div class="card-modal" id="skills">
-    <div class="modal-content">
-      <button class="close-btn">&times;</button>
+    <div class="card preview" onclick="expandCard(this)">
+      <h2>Cryptography Playground</h2>
+      <p>Encrypt and decrypt messages using various methods like Caesar, Vigenère, and AES. Select a method to see input options and try it out...</p>
+      <div class="full">
+        <select id="cryptoMethod" onchange="updateCryptoInputs()">
+          <option value="caesar">Caesar Cipher</option>
+          <option value="vigenere">Vigenère Cipher</option>
+        </select>
+        <input type="text" id="cryptoKey" placeholder="Shift (1-26)" />
+        <textarea id="cryptoMessage" placeholder="Enter message..."></textarea>
+        <button onclick="encryptMessage()">Encrypt</button>
+        <pre id="cryptoResult"></pre>
+      </div>
+    </div>
+
+    <div class="card preview" onclick="expandCard(this)">
+      <h2>Network Packet Visualizer</h2>
+      <p>Animated simulation of how packets move across a network. Helps visualize routing, delays, and layered communication in a cool way...</p>
+      <div class="full">
+        <div id="networkVisualizer">
+          <div class="node">Client</div>
+          <div class="node">Router</div>
+          <div class="node">Server</div>
+          <div class="packet" id="packet1"></div>
+        </div>
+        <button onclick="startPacketAnimation()">Start Simulation</button>
+      </div>
+    </div>
+
+    <div class="card preview" onclick="expandCard(this)">
+      <h2>This Website</h2>
+      <p>Portfolio site for showing off my skills and demos. Click to learn more or view the GitHub repository that powers it...</p>
+      <div class="full">
+        <p>This is the source code for the site you're on now. Built from scratch with HTML, CSS, and JavaScript. Functional project demos included.</p>
+        <a href="https://github.com/CollinAguiar/collinaguiar.github.io" target="_blank">View GitHub Repo</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="card preview" onclick="expandCard(this)">
       <h2>Skills</h2>
-      <ul>
-        <li><strong>Languages:</strong> Python, Bash, JavaScript, HTML, CSS</li>
-        <li><strong>Security:</strong> Kali Linux, Burp Suite, Wireshark</li>
-        <li><strong>Systems:</strong> Linux (Arch/Debian), Windows</li>
-      </ul>
+      <p>Languages: Python, Bash, Java, HTML/CSS, JS. Systems: Linux, Windows. Security: Pen-testing, CTFs, tooling...</p>
+      <div class="full">
+        <ul>
+          <li>Languages: Python, Bash, Java, HTML/CSS, JavaScript</li>
+          <li>Cybersecurity: Penetration Testing, CTFs, Basic Reverse Engineering</li>
+          <li>Systems: Linux (Arch, Ubuntu), Windows</li>
+          <li>Tools: Wireshark, nmap, Metasploit, Git</li>
+        </ul>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <div class="card-modal" id="goals">
-    <div class="modal-content">
-      <button class="close-btn">&times;</button>
+  <section id="goals">
+    <div class="card preview" onclick="expandCard(this)">
       <h2>Goals</h2>
-      <p>I'm aiming to land an internship in cybersecurity, publish tools on GitHub, and study at top-tier CS schools like CMU or MIT. I want to focus on low-level networking and cryptography next.</p>
+      <p>Short term: more CTFs, secure internship. Long term: research in security, maybe start a tool used by orgs...</p>
+      <div class="full">
+        <ul>
+          <li>Contribute to security-focused open-source projects</li>
+          <li>Land a cybersecurity internship with hands-on learning</li>
+          <li>Build tools that solve real-world security problems</li>
+          <li>Continue to level up in system-level programming and exploit dev</li>
+        </ul>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <div class="card-modal" id="contact">
-    <div class="modal-content">
-      <button class="close-btn">&times;</button>
+  <section id="contact">
+    <div class="card preview" onclick="expandCard(this)">
       <h2>Contact</h2>
-      <p>Email: <a href="mailto:collin.j.aguiar@gmail.com">collin.j.aguiar@gmail.com</a></p>
-      <p><a href="CollinAguiarResume2025.pdf" target="_blank">Download My Resume</a></p>
+      <p>Want to reach out? Click to see email and resume...</p>
+      <div class="full">
+        <p>Email: <a href="mailto:collin.j.aguiar@gmail.com">collin.j.aguiar@gmail.com</a></p>
+        <a href="CollinAguiarResume2025.pdf" target="_blank">Download Resume</a>
+      </div>
     </div>
-  </div>
+  </section>
 
   <footer>
-    <p>Built by Collin Aguiar. © 2025</p>
+    <p>© 2025 Collin Aguiar</p>
   </footer>
 
   <script src="main.js"></script>
