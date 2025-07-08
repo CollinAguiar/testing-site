@@ -2,82 +2,84 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Collin Aguiar | Cybersecurity Portfolio</title>
   <link rel="stylesheet" href="main.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.7.0/dist/vanilla-tilt.min.js"></script>
 </head>
 <body>
-  <nav id="navbar">
-    <div class="logo"><i class="fas fa-shield-alt"></i> Collin Aguiar</div>
-    <div class="nav-links">
-      <a href="#about"><i class="fas fa-user"></i> About</a>
-      <a href="#projects"><i class="fas fa-code"></i> Projects</a>
-      <a href="#skills"><i class="fas fa-tools"></i> Skills</a>
-      <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
-    </div>
-  </nav>
 
-  <canvas id="matrix"></canvas>
+<nav id="navbar">
+  <div class="logo"><i class="fas fa-shield-alt"></i> Collin Aguiar</div>
+  <div class="nav-links">
+    <a href="#about"><i class="fas fa-user"></i> About</a>
+    <a href="#projects"><i class="fas fa-code"></i> Projects</a>
+    <a href="#skills"><i class="fas fa-tools"></i> Skills</a>
+    <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
+  </div>
+</nav>
 
-  <section class="hero">
-    <h1 class="glitch" data-text="[placeholder]">[placeholder]</h1>
-    <p>[placeholder]</p>
-    <div class="cta-buttons">
-      <a href="#projects"><i class="fas fa-rocket"></i> [placeholder]</a>
-      <a href="mailto:collin@example.com"><i class="fas fa-briefcase"></i> [placeholder]</a>
-    </div>
-  </section>
+<canvas id="matrix"></canvas>
 
-  <section id="projects">
-    <h2 class="section-title"><i class="fas fa-code"></i> Projects</h2>
-    <div class="grid">
-      <div class="card expandable" id="vuln-card">
-        <h3><i class="fas fa-network-wired"></i> Vulnerability Scanner</h3>
-        <button class="expand-btn">Launch Tool</button>
-        <div class="expansion-content" id="vuln-tool">
-          <form id="vulnForm">
-            <input type="text" id="vulnUrl" placeholder="Enter site URL..." required>
-            <button type="submit">Scan</button>
-          </form>
-          <div id="vulnResults"></div>
-        </div>
-      </div>
+<section class="hero">
+  <h1 class="glitch" data-text="[placeholder]">[placeholder]</h1>
+  <p>[placeholder]</p>
+  <div class="cta-buttons">
+    <a href="#projects"><i class="fas fa-rocket"></i> [placeholder]</a>
+    <a href="mailto:collin@example.com"><i class="fas fa-briefcase"></i> [placeholder]</a>
+  </div>
+</section>
 
-      <div class="card expandable" id="crypto-card">
-        <h3><i class="fas fa-lock"></i> Cryptography Playground</h3>
-        <button class="expand-btn">Launch Tool</button>
-        <div class="expansion-content" id="crypto-tool">
-          <textarea id="input" placeholder="Type here..."></textarea>
-          <select id="cipher">
-            <option value="caesar">Caesar</option>
-            <option value="vigenere">Vigenère</option>
-          </select>
-          <input type="text" id="key" placeholder="Key/password">
-          <div class="crypto-buttons">
-            <button id="encrypt">Encrypt</button>
-            <button id="decrypt">Decrypt</button>
-          </div>
-          <pre id="output"></pre>
-        </div>
+<section id="projects">
+  <h2 class="section-title"><i class="fas fa-code"></i> Projects</h2>
+  <div class="grid">
+    <div class="card expandable fade-up" data-tilt data-tilt-max="8" data-tilt-glare id="vuln-card">
+      <h3><i class="fas fa-network-wired"></i> Vulnerability Scanner</h3>
+      <button class="expand-btn">Launch Tool</button>
+      <div class="expansion-content" id="vuln-tool">
+        <form id="vulnForm">
+          <input type="text" id="vulnUrl" placeholder="Enter site URL..." required />
+          <button type="submit">Scan</button>
+        </form>
+        <div id="vulnResults"></div>
       </div>
     </div>
-  </section>
 
-  <section id="contact">
-    <h2 class="section-title"><i class="fas fa-envelope"></i> Get In Touch</h2>
-    <p>[placeholder]</p>
-    <div class="cta-buttons">
-      <a href="mailto:collin.j.aguiar@gmail.com"><i class="fas fa-paper-plane"></i> [placeholder]</a>
-      <a href="CollinAguiarResume2025.pdf" target="_blank"><i class="fas fa-file-download"></i> [placeholder]</a>
+    <div class="card expandable fade-up" data-tilt data-tilt-max="8" data-tilt-glare id="crypto-card">
+      <h3><i class="fas fa-lock"></i> Cryptography Playground</h3>
+      <button class="expand-btn">Launch Tool</button>
+      <div class="expansion-content" id="crypto-tool">
+        <textarea id="input" placeholder="Type here..."></textarea>
+        <select id="cipher">
+          <option value="caesar">Caesar</option>
+          <option value="vigenere">Vigenère</option>
+        </select>
+        <input type="text" id="key" placeholder="Key/password" />
+        <div class="crypto-buttons">
+          <button id="encrypt">Encrypt</button>
+          <button id="decrypt">Decrypt</button>
+        </div>
+        <pre id="output"></pre>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <footer>
-    <p>[placeholder]</p>
-  </footer>
+<section id="contact">
+  <h2 class="section-title"><i class="fas fa-envelope"></i> Get In Touch</h2>
+  <p class="fade-up">[placeholder]</p>
+  <div class="cta-buttons fade-up">
+    <a href="mailto:collin.j.aguiar@gmail.com"><i class="fas fa-paper-plane"></i> [placeholder]</a>
+    <a href="CollinAguiarResume2025.pdf" target="_blank"><i class="fas fa-file-download"></i> [placeholder]</a>
+  </div>
+</section>
 
-  <script src="main.js"></script>
+<footer>
+  <p>[placeholder]</p>
+</footer>
+
+<script src="main.js"></script>
 </body>
 </html>

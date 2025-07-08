@@ -1,20 +1,29 @@
+/* Reset & basics */
+* {
+  box-sizing: border-box;
+}
 body {
   margin: 0;
   background: #000;
   color: #fff;
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/* Nav */
 nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1em 2em;
+  padding: 1.2em 3em;
   position: fixed;
   width: 100%;
-  background: rgba(0, 0, 0, 0.85);
-  transition: top 0.3s;
+  background: rgba(0,0,0,0.85);
+  top: 0;
+  left: 0;
+  transition: top 0.3s ease;
   z-index: 999;
 }
 
@@ -22,83 +31,252 @@ nav.hidden {
   top: -80px;
 }
 
+.logo {
+  font-weight: 700;
+  font-size: 1.5em;
+  color: #ff003c;
+}
+
 .nav-links a {
-  margin-left: 1em;
+  color: #ff003c;
+  margin-left: 1.5em;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #ff3366;
+}
+
+/* Matrix Background */
+#matrix {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background: black;
+}
+
+/* Hero Section */
+.hero {
+  padding: 14em 2em 5em;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.glitch {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #ff003c;
+  position: relative;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  animation: glitch 2s infinite;
+}
+
+@keyframes glitch {
+  0% {
+    text-shadow:
+      2px 0 red,
+      -2px 0 cyan;
+  }
+  50% {
+    text-shadow:
+      -2px 0 red,
+      2px 0 cyan;
+  }
+  100% {
+    text-shadow:
+      2px 0 red,
+      -2px 0 cyan;
+  }
+}
+
+.cta-buttons a {
+  display: inline-block;
+  margin: 1em 1em 0;
+  padding: 0.7em 2em;
+  border-radius: 30px;
+  border: 2px solid #ff003c;
   color: #ff003c;
   text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
-.hero {
-  padding: 12em 2em 4em;
-  text-align: center;
+.cta-buttons a:hover {
+  background: #ff003c;
+  color: black;
 }
 
+/* Sections Titles */
 .section-title {
   text-align: center;
-  font-size: 2em;
+  font-size: 2.5rem;
+  font-weight: 700;
   color: #ff003c;
   margin-top: 3em;
+  margin-bottom: 1.5em;
 }
 
+/* Grid layout */
 .grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 2em;
-  padding: 2em;
   justify-content: center;
-}
-
-.card {
-  background: #111;
-  padding: 1.5em;
-  border-radius: 10px;
-  width: 300px;
+  gap: 2em;
+  padding: 0 2em 3em;
+  z-index: 1;
   position: relative;
 }
 
-.expandable .expand-btn {
-  background: #ff003c;
-  color: #fff;
-  border: none;
-  padding: 0.5em 1em;
-  margin-top: 1em;
-  cursor: pointer;
+/* Cards */
+.card {
+  background: #111;
+  padding: 1.7em 1.8em;
+  border-radius: 15px;
+  width: 320px;
+  box-shadow:
+    0 0 10px #ff003c33,
+    0 0 20px #ff003c44;
+  cursor: default;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.expansion-content {
-  display: none;
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow:
+    0 0 20px #ff003c66,
+    0 0 40px #ff003c99;
+}
+
+/* Tilt glare effect */
+[data-tilt-glare] {
+  --tilt-glare: rgba(255, 0, 60, 0.15);
+  --tilt-glare-hover: rgba(255, 0, 60, 0.3);
+}
+
+/* Expand button */
+.expand-btn {
+  background: #ff003c;
+  border: none;
+  color: white;
+  padding: 0.6em 1.4em;
+  border-radius: 30px;
+  font-weight: 700;
   margin-top: 1em;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.3s ease;
+}
+
+.expand-btn:hover {
+  background: #ff3366;
+}
+
+/* Expansion Content */
+.expansion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease, padding 0.3s ease;
+  margin-top: 0;
 }
 
 .card.active .expansion-content {
-  display: block;
+  max-height: 700px;
+  margin-top: 1.5em;
+  padding-top: 1em;
+  border-top: 1px solid #ff003c;
 }
 
+/* Inputs and buttons inside tools */
 input, textarea, select, button {
   width: 100%;
-  margin-top: 0.5em;
-  padding: 0.5em;
+  margin-top: 0.7em;
+  padding: 0.6em;
   background: #222;
-  color: #fff;
-  border: 1px solid #444;
+  color: white;
+  border: 1px solid #333;
+  border-radius: 6px;
+  font-size: 1em;
+  font-family: 'Inter', sans-serif;
+  resize: none;
 }
 
 button {
   background: #ff003c;
-  color: white;
-  cursor: pointer;
   border: none;
+  cursor: pointer;
+  font-weight: 700;
 }
 
-pre {
+button:hover {
+  background: #ff3366;
+}
+
+/* Crypto playground buttons container */
+.crypto-buttons {
+  display: flex;
+  gap: 1em;
+  margin-top: 1em;
+}
+
+.crypto-buttons button {
+  flex: 1;
+}
+
+/* Output box for crypto */
+pre#output {
   background: #111;
   padding: 1em;
+  margin-top: 1em;
+  height: 150px;
+  overflow-y: auto;
   white-space: pre-wrap;
+  border-radius: 6px;
+  border: 1px solid #333;
 }
 
+/* Fade Up Animation */
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Footer */
 footer {
   text-align: center;
-  padding: 2em;
+  padding: 2.5em;
   font-size: 0.9em;
-  color: #888;
+  color: #777;
+  background: #111;
+  margin-top: 5em;
+  z-index: 1;
+  position: relative;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav-links a {
+    margin-left: 1em;
+  }
+
+  .grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 90%;
+  }
 }
