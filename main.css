@@ -1,38 +1,10 @@
-* {
+body, html {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-}
-
-body {
   font-family: 'Inter', sans-serif;
-  background: #0d0d0d;
-  color: #f2f2f2;
+  background: black;
+  color: #fff;
   overflow-x: hidden;
-}
-
-nav {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  background: #111;
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem 2rem;
-  z-index: 1000;
-  transition: top 0.3s;
-}
-
-.logo {
-  font-weight: 700;
-  font-size: 1.2rem;
-}
-
-.nav-links a {
-  margin-left: 1.5rem;
-  text-decoration: none;
-  color: #f2f2f2;
-  font-weight: 500;
 }
 
 canvas#matrix {
@@ -40,21 +12,55 @@ canvas#matrix {
   top: 0;
   left: 0;
   z-index: 0;
-  pointer-events: none;
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(10, 10, 10, 0.9);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em 2em;
+  z-index: 2;
+  transition: top 0.3s ease;
+}
+
+.logo {
+  font-weight: 700;
+  color: #ff003c;
+  font-size: 1.25em;
+}
+
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 1em;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: #ff003c;
+}
+
+section {
+  padding: 100px 5% 60px;
+  position: relative;
+  z-index: 1;
 }
 
 .hero {
-  padding: 10rem 2rem 4rem;
   text-align: center;
-  background: transparent;
-  z-index: 2;
-  position: relative;
+  padding-top: 160px;
 }
 
 .glitch {
-  font-size: 3rem;
+  font-size: 3em;
+  font-weight: 700;
+  color: #ff003c;
   position: relative;
-  color: red;
+  display: inline-block;
   text-transform: uppercase;
 }
 
@@ -63,145 +69,140 @@ canvas#matrix {
   content: attr(data-text);
   position: absolute;
   top: 0;
-  width: 100%;
-  overflow: hidden;
-  color: #f00;
+  left: 0;
+  opacity: 0.8;
 }
 
 .glitch::before {
   left: 2px;
-  text-shadow: -2px 0 blue;
-  animation: glitch 1s infinite linear alternate-reverse;
+  text-shadow: -2px 0 red;
+  clip: rect(24px, 550px, 90px, 0);
 }
 
 .glitch::after {
   left: -2px;
-  text-shadow: -2px 0 lime;
-  animation: glitch 0.8s infinite linear alternate-reverse;
+  text-shadow: -2px 0 blue;
+  clip: rect(85px, 550px, 140px, 0);
+}
+
+.active-glitch::before,
+.active-glitch::after {
+  animation: glitch 0.5s infinite;
 }
 
 @keyframes glitch {
   0% {
-    clip-path: inset(0 0 40% 0);
+    clip: rect(42px, 9999px, 44px, 0);
+    transform: skew(0.3deg);
   }
-  50% {
-    clip-path: inset(60% 0 20% 0);
+  5% {
+    clip: rect(85px, 9999px, 90px, 0);
+    transform: skew(0.2deg);
   }
-  100% {
-    clip-path: inset(10% 0 70% 0);
+  10% {
+    clip: rect(20px, 9999px, 24px, 0);
+    transform: skew(0.5deg);
   }
-}
-
-.hero-subtext {
-  margin-top: 0.5rem;
-  color: #aaa;
-}
-
-.cta-buttons {
-  margin-top: 1.5rem;
 }
 
 .cta-buttons a {
-  text-decoration: none;
+  display: inline-block;
+  margin: 1em 0.5em;
+  padding: 0.75em 1.5em;
   background: #ff003c;
-  color: white;
-  padding: 0.7rem 1.5rem;
-  margin: 0 0.5rem;
-  border-radius: 3px;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
   transition: background 0.3s;
 }
 
 .cta-buttons a:hover {
-  background: #cc002e;
-}
-
-section {
-  padding: 4rem 2rem;
-  position: relative;
-  z-index: 2;
+  background: #e60035;
 }
 
 .card {
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 6px;
-  margin-bottom: 2rem;
-  padding: 1.5rem;
-  transition: all 0.4s ease;
+  background: #111;
+  border-radius: 8px;
+  padding: 1.5em;
+  margin: 1.5em auto;
+  max-width: 800px;
+  box-shadow: 0 0 15px rgba(255, 0, 60, 0.3);
   cursor: pointer;
   overflow: hidden;
+  transition: max-height 0.5s ease, background 0.3s ease;
 }
 
-.card h2 {
-  margin-bottom: 0.8rem;
-  font-size: 1.4rem;
-}
-
-.card.preview .full {
+.preview-card .full-content {
   display: none;
 }
 
-.card.expanded .preview p {
-  display: none;
-}
-
-.card.expanded .full {
+.preview-card.expanded .full-content {
   display: block;
-  margin-top: 1rem;
+  margin-top: 1em;
 }
 
-input, textarea, select, button {
-  margin-top: 0.6rem;
-  display: block;
-  width: 100%;
-  background: #111;
-  color: white;
-  border: 1px solid #444;
-  padding: 0.5rem;
-  border-radius: 3px;
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1em;
 }
 
-button {
-  cursor: pointer;
-  background: #ff003c;
-}
-
-button:hover {
-  background: #cc002e;
-}
-
-#networkVisualizer {
+#network-viz {
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: relative;
-  margin-top: 1rem;
+  height: 100px;
 }
 
 .node {
   background: #222;
-  padding: 1rem;
-  border-radius: 5px;
+  padding: 1em;
+  border-radius: 50%;
   text-align: center;
-  flex: 1;
-  margin: 0 1rem;
 }
 
 .packet {
   width: 20px;
   height: 20px;
-  background: red;
+  background: #ff003c;
   border-radius: 50%;
   position: absolute;
-  top: 30px;
+  top: 50%;
   left: 0;
-  animation: none;
+  transform: translateY(-50%);
+  transition: left 1s linear;
+}
+
+.packet.active {
+  left: calc(100% - 20px);
+}
+
+textarea, input, select, button {
+  width: 100%;
+  margin-top: 0.5em;
+  margin-bottom: 1em;
+  padding: 0.75em;
+  border: none;
+  border-radius: 4px;
+  background: #222;
+  color: white;
+  font-family: 'Inter', sans-serif;
+}
+
+button {
+  background: #ff003c;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #e60035;
 }
 
 footer {
   text-align: center;
-  padding: 2rem;
-  font-size: 0.9rem;
-  color: #777;
+  padding: 2em;
   background: #111;
+  color: #888;
+  margin-top: 4em;
 }

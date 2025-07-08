@@ -9,6 +9,8 @@
   <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.7.0/dist/vanilla-tilt.min.js"></script>
 </head>
 <body>
+  <canvas id="matrix"></canvas>
+
   <nav id="navbar">
     <div class="logo">Collin Aguiar</div>
     <div class="nav-links">
@@ -20,115 +22,100 @@
     </div>
   </nav>
 
-  <canvas id="matrix"></canvas>
-
   <section class="hero">
     <h1 class="glitch" data-text="Collin Aguiar">Collin Aguiar</h1>
-    <p class="hero-subtext">Aspiring Cybersecurity Engineer & Builder</p>
+    <p class="preview">I’m Collin, a high schooler with a deep interest in cybersecurity and coding. I spend my free time building projects, learning new programmin...</p>
     <div class="cta-buttons">
       <a href="#projects">View Projects</a>
       <a href="mailto:collin.j.aguiar@gmail.com">Contact Me</a>
     </div>
   </section>
 
-  <section id="about">
-    <div class="card preview" onclick="expandCard(this)">
-      <h2>About Me</h2>
-      <p>I’m Collin, a high schooler with a deep interest in cybersecurity and coding. I spend my free time building projects, learning new programmin...</p>
-      <div class="full">
-        <p>I’m Collin, a high schooler with a deep interest in cybersecurity and coding. I spend my free time building projects, learning new programming techniques, and participating in security competitions. My interests include ethical hacking, networking, and Linux-based system administration. I’m constantly working to push my skills further and create tools that are both practical and secure.</p>
-      </div>
+  <section id="about" class="card preview-card" data-tilt>
+    <h2>About Me</h2>
+    <p class="preview">I’m constantly working on cybersecurity tools, server setups, and unique tech projects. I like hands-on stuff more than just theory, and I’m always...</p>
+    <div class="full-content">
+      <p>I’m a high school student based in Seekonk, MA, who’s been passionate about technology ever since I built my first computer. I'm into cybersecurity, software engineering, and building things that actually work. I'm currently focused on applying my skills to real-world projects and learning through experimentation.</p>
     </div>
   </section>
 
   <section id="projects">
-    <div class="card preview" onclick="expandCard(this)">
-      <h2>Vulnerability Scanner</h2>
-      <p>Tool to inspect and identify potential security issues in a system. Enter a target to see simulated output for ports, protocols, and weakne...</p>
-      <div class="full">
-        <input type="text" id="vulnTarget" placeholder="Enter URL or IP address" />
-        <button onclick="simulateScan()">Scan</button>
-        <pre id="vulnOutput"></pre>
-      </div>
-    </div>
-
-    <div class="card preview" onclick="expandCard(this)">
-      <h2>Cryptography Playground</h2>
-      <p>Encrypt and decrypt messages using various methods like Caesar, Vigenère, and AES. Select a method to see input options and try it out...</p>
-      <div class="full">
-        <select id="cryptoMethod" onchange="updateCryptoInputs()">
-          <option value="caesar">Caesar Cipher</option>
-          <option value="vigenere">Vigenère Cipher</option>
-        </select>
-        <input type="text" id="cryptoKey" placeholder="Shift (1-26)" />
-        <textarea id="cryptoMessage" placeholder="Enter message..."></textarea>
-        <button onclick="encryptMessage()">Encrypt</button>
-        <pre id="cryptoResult"></pre>
-      </div>
-    </div>
-
-    <div class="card preview" onclick="expandCard(this)">
-      <h2>Network Packet Visualizer</h2>
-      <p>Animated simulation of how packets move across a network. Helps visualize routing, delays, and layered communication in a cool way...</p>
-      <div class="full">
-        <div id="networkVisualizer">
-          <div class="node">Client</div>
-          <div class="node">Router</div>
-          <div class="node">Server</div>
-          <div class="packet" id="packet1"></div>
+    <h2>Projects</h2>
+    <div class="grid">
+      <div class="card preview-card" data-tilt>
+        <h3>Cryptography Playground</h3>
+        <p class="preview">An interactive tool to test basic ciphers like Caesar, Vigenère, AES and hash functions like SHA-256...</p>
+        <div class="full-content">
+          <label>Algorithm:</label>
+          <select id="crypto-select">
+            <option value="caesar">Caesar Cipher</option>
+            <option value="vigenere">Vigenère Cipher</option>
+            <option value="sha256">SHA-256 Hash</option>
+          </select>
+          <label id="crypto-key-label">Shift (1-26):</label>
+          <input type="text" id="crypto-key" placeholder="3" />
+          <textarea id="crypto-input" placeholder="Enter text..."></textarea>
+          <button onclick="encrypt()">Encrypt</button>
+          <textarea id="crypto-output" placeholder="Result..." readonly></textarea>
         </div>
-        <button onclick="startPacketAnimation()">Start Simulation</button>
       </div>
-    </div>
 
-    <div class="card preview" onclick="expandCard(this)">
-      <h2>This Website</h2>
-      <p>Portfolio site for showing off my skills and demos. Click to learn more or view the GitHub repository that powers it...</p>
-      <div class="full">
-        <p>This is the source code for the site you're on now. Built from scratch with HTML, CSS, and JavaScript. Functional project demos included.</p>
-        <a href="https://github.com/CollinAguiar/collinaguiar.github.io" target="_blank">View GitHub Repo</a>
+      <div class="card preview-card" data-tilt>
+        <h3>Network Visualizer</h3>
+        <p class="preview">A simulated visual of packet flow between devices using animated SVGs and node graphs. Built to teac...</p>
+        <div class="full-content">
+          <div id="network-viz">
+            <div class="node">You</div>
+            <div class="packet"></div>
+            <div class="node">Server</div>
+          </div>
+          <button onclick="simulatePacket()">Send Packet</button>
+        </div>
       </div>
-    </div>
-  </section>
 
-  <section id="skills">
-    <div class="card preview" onclick="expandCard(this)">
-      <h2>Skills</h2>
-      <p>Languages: Python, Bash, Java, HTML/CSS, JS. Systems: Linux, Windows. Security: Pen-testing, CTFs, tooling...</p>
-      <div class="full">
-        <ul>
-          <li>Languages: Python, Bash, Java, HTML/CSS, JavaScript</li>
-          <li>Cybersecurity: Penetration Testing, CTFs, Basic Reverse Engineering</li>
-          <li>Systems: Linux (Arch, Ubuntu), Windows</li>
-          <li>Tools: Wireshark, nmap, Metasploit, Git</li>
-        </ul>
+      <div class="card preview-card" data-tilt>
+        <h3>This Website</h3>
+        <p class="preview">You're looking at it. Built from scratch with HTML, CSS, and JS with interactive modules and clean p...</p>
+        <div class="full-content">
+          <p>View the code for this site here:</p>
+          <a href="https://github.com/CollinAguiar/collinaguiar.github.io" target="_blank">GitHub Repo</a>
+        </div>
       </div>
     </div>
   </section>
 
-  <section id="goals">
-    <div class="card preview" onclick="expandCard(this)">
-      <h2>Goals</h2>
-      <p>Short term: more CTFs, secure internship. Long term: research in security, maybe start a tool used by orgs...</p>
-      <div class="full">
-        <ul>
-          <li>Contribute to security-focused open-source projects</li>
-          <li>Land a cybersecurity internship with hands-on learning</li>
-          <li>Build tools that solve real-world security problems</li>
-          <li>Continue to level up in system-level programming and exploit dev</li>
-        </ul>
-      </div>
+  <section id="skills" class="card preview-card" data-tilt>
+    <h2>Skills</h2>
+    <p class="preview">Python, Bash, HTML/CSS/JS, Penetration Testing, Linux Admin, Networking...</p>
+    <div class="full-content">
+      <ul>
+        <li>Languages: Python, JavaScript, Bash, Java</li>
+        <li>Cybersecurity: Pen-testing, Vuln Discovery, CTFs</li>
+        <li>Tools: Linux (Arch/Debian), Wireshark, Nmap, Git</li>
+        <li>Other: Web Dev, Game Server Admin, Secure Auth</li>
+      </ul>
     </div>
   </section>
 
-  <section id="contact">
-    <div class="card preview" onclick="expandCard(this)">
-      <h2>Contact</h2>
-      <p>Want to reach out? Click to see email and resume...</p>
-      <div class="full">
-        <p>Email: <a href="mailto:collin.j.aguiar@gmail.com">collin.j.aguiar@gmail.com</a></p>
-        <a href="CollinAguiarResume2025.pdf" target="_blank">Download Resume</a>
-      </div>
+  <section id="goals" class="card preview-card" data-tilt>
+    <h2>Goals</h2>
+    <p class="preview">Build more advanced security tools, contribute to open-source, and land an internship in cybersecur...</p>
+    <div class="full-content">
+      <ul>
+        <li>Develop full-featured web-based vulnerability scanners</li>
+        <li>Contribute to open-source security libraries and tools</li>
+        <li>Intern at a company focused on offensive security or system hardening</li>
+        <li>Master Rust and C for low-level performance-based coding</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="contact" class="card preview-card" data-tilt>
+    <h2>Contact</h2>
+    <p class="preview">Shoot me an email or download my resume below...</p>
+    <div class="full-content">
+      <p>Email: <a href="mailto:collin.j.aguiar@gmail.com">collin.j.aguiar@gmail.com</a></p>
+      <a href="CollinAguiarResume2025.pdf" target="_blank">Download Resume</a>
     </div>
   </section>
 

@@ -1,108 +1,119 @@
-VanillaTilt.init(document.querySelectorAll(".card"), {
-  max: 10,
-  speed: 400,
-  glare: true,
-  "max-glare": 0.2
-})
+// Matrix background effect
+const canvas = document.getElementById('matrix');
+const ctx = canvas.getContext('2d');
 
-const nav = document.getElementById("navbar")
-let lastScrollY = window.scrollY
-
-window.addEventListener("scroll", () => {
-  if (window.scrollY > lastScrollY) {
-    nav.style.top = "-80px"
-  } else {
-    nav.style.top = "0"
-  }
-  lastScrollY = window.scrollY
-})
-
-function expandCard(card) {
-  const isExpanded = card.classList.contains("expanded")
-  document.querySelectorAll(".card").forEach(c => c.classList.remove("expanded"))
-  if (!isExpanded) card.classList.add("expanded")
-}
-
-function simulateScan() {
-  const target = document.getElementById("vulnTarget").value
-  const out = document.getElementById("vulnOutput")
-  out.textContent = `Scanning ${target}...
-Open Ports:
- - 22 (SSH)
- - 80 (HTTP)
- - 443 (HTTPS)
-
-Detected Issues:
- - Directory listing on /admin
- - Outdated SSL certificate
- - Weak SSH password policy
-`
-}
-
-function updateCryptoInputs() {
-  const method = document.getElementById("cryptoMethod").value
-  const keyInput = document.getElementById("cryptoKey")
-  keyInput.placeholder = method === "caesar" ? "Shift (1-26)" : "Keyword"
-}
-
-function encryptMessage() {
-  const method = document.getElementById("cryptoMethod").value
-  const key = document.getElementById("cryptoKey").value
-  const msg = document.getElementById("cryptoMessage").value
-  let out = ""
-
-  if (method === "caesar") {
-    const shift = parseInt(key) || 0
-    out = msg.replace(/[a-z]/gi, c => {
-      const base = c >= "a" ? 97 : 65
-      return String.fromCharCode((c.charCodeAt(0) - base + shift) % 26 + base)
-    })
-  } else if (method === "vigenere") {
-    let i = 0
-    out = msg.replace(/[a-z]/gi, c => {
-      const base = c >= "a" ? 97 : 65
-      const k = key[i++ % key.length].toLowerCase().charCodeAt(0) - 97
-      return String.fromCharCode((c.charCodeAt(0) - base + k) % 26 + base)
-    })
-  }
-
-  document.getElementById("cryptoResult").textContent = out
-}
-
-function startPacketAnimation() {
-  const packet = document.getElementById("packet1")
-  packet.style.transition = "left 3s ease-in-out"
-  packet.style.left = "90%"
-  setTimeout(() => {
-    packet.style.transition = "none"
-    packet.style.left = "0"
-  }, 4000)
-}
-
-const canvas = document.getElementById("matrix")
-const ctx = canvas.getContext("2d")
-let width, height, columns, drops
-
+let w, h, fontSize = 16, columns, drops;
 function resizeCanvas() {
-  width = canvas.width = window.innerWidth
-  height = canvas.height = window.innerHeight
-  columns = Math.floor(width / 14)
-  drops = Array(columns).fill(1)
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
+  columns = Math.floor(w / fontSize);
+  drops = Array(columns).fill(1);
 }
-resizeCanvas()
-window.addEventListener("resize", resizeCanvas)
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
 
+const chars = '01';
 function drawMatrix() {
-  ctx.fillStyle = "rgba(0, 0, 0, 0.05)"
-  ctx.fillRect(0, 0, width, height)
-  ctx.fillStyle = "#ff003c"
-  ctx.font = "14px monospace"
+  ctx.fillStyle = 'rgba(0,0,0,0.05)';
+  ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = '#ff003c';
+  ctx.font = fontSize + 'px monospace';
   for (let i = 0; i < drops.length; i++) {
-    const text = "01"[Math.floor(Math.random() * 2)]
-    ctx.fillText(text, i * 14, drops[i] * 14)
-    if (drops[i] * 14 > height && Math.random() > 0.975) drops[i] = 0
-    drops[i]++
+    const text = chars[Math.floor(Math.random() * chars.length)];
+    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+    if (drops[i] * fontSize > h && Math.random() > 0.975) drops[i] = 0;
+    drops[i]++;
   }
-  requestAnimationFrame(drawMatrix)
+  requestAnimationFrame(drawMatrix);
 }
-drawMatrix()
+drawMatrix();
+
+// Glitch effect
+const glitchText = document.querySelector('.glitch');
+setInterval(() => {
+  glitchText.classList.toggle('active-glitch');
+}, 250);
+
+// Scroll hide navbar
+let lastScrollTop = 0;
+window.addEventListener('scroll', () => {
+  const navbar = document.getElementById('navbar');
+  const st = window.pageYOffset || document.documentElement.scrollTop;
+  if (st > lastScrollTop) {
+    navbar.style.top = '-80px';
+  } else {
+    navbar.style.top = '0';
+  }
+  lastScrollTop = st <= 0 ? 0 : st;
+});
+
+// Expandable cards
+document.querySelectorAll('.preview-card').forEach(card => {
+  card.addEventListener('click', () => {
+    if (card.classList.contains('expanded')) {
+      card.classList.remove('expanded');
+    } else {
+      document.querySelectorAll('.preview-card.expanded').forEach(c => c.classList.remove('expanded'));
+      card.classList.add('expanded');
+    }
+  });
+});
+
+// Cryptography playground
+function encrypt() {
+  const algo = document.getElementById('crypto-select').value;
+  const key = document.getElementById('crypto-key').value;
+  const input = document.getElementById('crypto-input').value;
+  const output = document.getElementById('crypto-output');
+
+  if (algo === 'caesar') {
+    const shift = parseInt(key) || 0;
+    output.value = input.split('').map(char => {
+      if (/[a-z]/i.test(char)) {
+        const base = char === char.toLowerCase() ? 97 : 65;
+        return String.fromCharCode(((char.charCodeAt(0) - base + shift) % 26) + base);
+      }
+      return char;
+    }).join('');
+  } else if (algo === 'vigenere') {
+    let k = key.toLowerCase();
+    let j = 0;
+    output.value = input.split('').map(c => {
+      if (/[a-z]/i.test(c)) {
+        const code = c.charCodeAt(0);
+        const base = c === c.toLowerCase() ? 97 : 65;
+        const keyCode = k[j % k.length].charCodeAt(0) - 97;
+        j++;
+        return String.fromCharCode(((code - base + keyCode) % 26) + base);
+      }
+      return c;
+    }).join('');
+  } else if (algo === 'sha256') {
+    crypto.subtle.digest('SHA-256', new TextEncoder().encode(input)).then(buffer => {
+      output.value = [...new Uint8Array(buffer)].map(x => x.toString(16).padStart(2, '0')).join('');
+    });
+  }
+}
+
+document.getElementById('crypto-select').addEventListener('change', e => {
+  const keyLabel = document.getElementById('crypto-key-label');
+  const algo = e.target.value;
+  if (algo === 'caesar') {
+    keyLabel.innerText = 'Shift (1-26):';
+    document.getElementById('crypto-key').placeholder = '3';
+  } else if (algo === 'vigenere') {
+    keyLabel.innerText = 'Keyword:';
+    document.getElementById('crypto-key').placeholder = 'key';
+  } else {
+    keyLabel.innerText = 'Key/Password (not used)';
+    document.getElementById('crypto-key').placeholder = '';
+  }
+});
+
+// Network visualizer
+function simulatePacket() {
+  const packet = document.querySelector('.packet');
+  packet.classList.remove('active');
+  void packet.offsetWidth;
+  packet.classList.add('active');
+}
