@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Collin Aguiar</title>
+  <title>Collin Aguiar's Portfolio</title>
   <link rel="stylesheet" href="main.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -12,11 +12,11 @@
   <nav id="navbar">
     <div class="logo"><i class="fas fa-shield-alt"></i> Collin Aguiar</div>
     <div class="nav-links">
-      <a href="#about">About</a>
-      <a href="#projects">Projects</a>
-      <a href="#skills">Skills</a>
-      <a href="#goals">Goals</a>
-      <a href="#contact">Contact</a>
+      <a href="#about"><i class="fas fa-user"></i> About</a>
+      <a href="#projects"><i class="fas fa-code"></i> Projects</a>
+      <a href="#skills"><i class="fas fa-tools"></i> Skills</a>
+      <a href="#goals"><i class="fas fa-bullseye"></i> Goals</a>
+      <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
     </div>
   </nav>
 
@@ -24,35 +24,96 @@
 
   <section class="hero">
     <h1 class="glitch" data-text="Collin Aguiar">Collin Aguiar</h1>
-    <p>I’m Collin, a high schooler with a deep interest in cybersecurity and coding. I spend my free time building projects, learning new programming...</p>
+    <p class="fade-up">I’m Collin, a high schooler with a deep interest in cybersecurity and coding. I spend my free time building projects, learning new programming concepts, and exploring digital security...</p>
     <div class="cta-buttons">
       <a href="#projects"><i class="fas fa-rocket"></i> View Projects</a>
       <a href="mailto:collin.j.aguiar@gmail.com"><i class="fas fa-briefcase"></i> Contact Me</a>
     </div>
   </section>
 
-  <section id="about" class="card-preview"> 
-    <h2>About Me</h2>
-    <p>I love breaking things to understand how they work. From building PCs to diving into penetration testing, my goal is to stay hands-on...</p>
-    <button class="expand-btn">Read More</button>
-    <div class="card-full">
-      <p>I’m a high school student from Massachusetts deeply into cybersecurity, ethical hacking, and Linux systems. I’ve built and maintained servers, created tools, and participate regularly in platforms like PicoCTF and HackTheBox.</p>
-    </div>
-  </section>
+  <div class="cards-wrapper">
 
-  <section id="projects" class="card-preview">
-    <h2>Projects</h2>
-    <p>Scanalyzer, AgsConnect, Packet Visualizer, Encryption Tool, and more...</p>
-    <button class="expand-btn">Read More</button>
-    <div class="card-full">
+    <div class="card-preview" data-target="about">
+      <h3><i class="fas fa-user"></i> About Me</h3>
+      <p>I’m from Seekonk, MA. I've been building PCs and breaking into code since I was 13...</p>
+    </div>
+
+    <div class="card-preview" data-target="projects">
+      <h3><i class="fas fa-code"></i> Projects</h3>
+      <p>Scanalyzer, encrypted messaging tools, secure note storage, network sim lab...</p>
+    </div>
+
+    <div class="card-preview" data-target="skills">
+      <h3><i class="fas fa-tools"></i> Skills</h3>
+      <p>Python, Bash, Linux, Cryptography, Networking, Hardware...</p>
+    </div>
+
+    <div class="card-preview" data-target="goals">
+      <h3><i class="fas fa-bullseye"></i> Goals</h3>
+      <p>Intern in cybersecurity, contribute to OSS, deepen my networking stack knowledge...</p>
+    </div>
+
+    <div class="card-preview" data-target="contact">
+      <h3><i class="fas fa-envelope"></i> Contact</h3>
+      <p>Reach out via email or download my resume...</p>
+    </div>
+
+  </div>
+
+  <div class="card-modal" id="about">
+    <div class="modal-content">
+      <button class="close-btn">&times;</button>
+      <h2>About Me</h2>
+      <p>I’m a 16-year-old student from Seekonk, MA. I’ve been passionate about technology ever since I built my first PC. I focus on cybersecurity, ethical hacking, and backend development.</p>
+    </div>
+  </div>
+
+  <div class="card-modal" id="projects">
+    <div class="modal-content">
+      <button class="close-btn">&times;</button>
+      <h2>Projects</h2>
       <ul>
-        <li><strong>Scanalyzer:</strong> A tool for analyzing open ports and service banners.</li>
-        <li><strong>Cryptography Playground:</strong> Test modern and legacy encryption methods.</li>
-        <li><strong>Packet Visualizer:</strong> Simulates animated packets traveling between virtual nodes.</li>
-        <li><strong>This Website:</strong> <a href="https://github.com/CollinAguiar/collinaguiar.github.io" target="_blank">GitHub Repo</a></li>
+        <li><strong>Scanalyzer</strong>: An in-depth scanner for networks and endpoints.</li>
+        <li><strong>Cryptography Playground</strong>: Try out AES, RSA, and other ciphers live.</li>
+        <li><strong>Network Visualizer</strong>: Simulates basic packet routing in JS.</li>
+        <li><strong>This Website</strong>: <a href="https://github.com/CollinAguiar/collinaguiar.github.io" target="_blank">GitHub Repo</a></li>
       </ul>
     </div>
-  </section>
+  </div>
 
-  <section id="skills" class="card-preview">
-    <h2>Skills</h2
+  <div class="card-modal" id="skills">
+    <div class="modal-content">
+      <button class="close-btn">&times;</button>
+      <h2>Skills</h2>
+      <ul>
+        <li><strong>Languages:</strong> Python, Bash, JavaScript, HTML, CSS</li>
+        <li><strong>Security:</strong> Kali Linux, Burp Suite, Wireshark</li>
+        <li><strong>Systems:</strong> Linux (Arch/Debian), Windows</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card-modal" id="goals">
+    <div class="modal-content">
+      <button class="close-btn">&times;</button>
+      <h2>Goals</h2>
+      <p>I'm aiming to land an internship in cybersecurity, publish tools on GitHub, and study at top-tier CS schools like CMU or MIT. I want to focus on low-level networking and cryptography next.</p>
+    </div>
+  </div>
+
+  <div class="card-modal" id="contact">
+    <div class="modal-content">
+      <button class="close-btn">&times;</button>
+      <h2>Contact</h2>
+      <p>Email: <a href="mailto:collin.j.aguiar@gmail.com">collin.j.aguiar@gmail.com</a></p>
+      <p><a href="CollinAguiarResume2025.pdf" target="_blank">Download My Resume</a></p>
+    </div>
+  </div>
+
+  <footer>
+    <p>Built by Collin Aguiar. © 2025</p>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
