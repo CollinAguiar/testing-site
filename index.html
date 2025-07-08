@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Collin Aguiar | Portfolio</title>
+  <title>Collin Aguiar | Cybersecurity Portfolio</title>
   <link rel="stylesheet" href="main.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
@@ -19,8 +19,10 @@
     </div>
   </nav>
 
+  <canvas id="matrix"></canvas>
+
   <section class="hero">
-    <h1>[placeholder]</h1>
+    <h1 class="glitch" data-text="[placeholder]">[placeholder]</h1>
     <p>[placeholder]</p>
     <div class="cta-buttons">
       <a href="#projects"><i class="fas fa-rocket"></i> [placeholder]</a>
@@ -28,49 +30,43 @@
     </div>
   </section>
 
-  <section id="about">
-    <h2><i class="fas fa-user"></i> About Me</h2>
-    <p>[placeholder]</p>
-  </section>
-
   <section id="projects">
-    <h2><i class="fas fa-code"></i> Projects</h2>
+    <h2 class="section-title"><i class="fas fa-code"></i> Projects</h2>
     <div class="grid">
-      <div class="card" data-id="project1">
-        <h3><i class="fas fa-terminal"></i> Packet Visualizer</h3>
-        <p class="preview">[placeholder]</p>
-        <div class="details">
-          <p>[full demo or explanation for the packet visualizer project]</p>
+      <div class="card expandable" id="vuln-card">
+        <h3><i class="fas fa-network-wired"></i> Vulnerability Scanner</h3>
+        <button class="expand-btn">Launch Tool</button>
+        <div class="expansion-content" id="vuln-tool">
+          <form id="vulnForm">
+            <input type="text" id="vulnUrl" placeholder="Enter site URL..." required>
+            <button type="submit">Scan</button>
+          </form>
+          <div id="vulnResults"></div>
         </div>
       </div>
-      <div class="card" data-id="project2">
-        <h3><i class="fas fa-key"></i> Crypto Tool</h3>
-        <p class="preview">[placeholder]</p>
-        <div class="details">
-          <p>[full demo or explanation for the crypto tool]</p>
-        </div>
-      </div>
-      <div class="card" data-id="project3">
-        <h3><i class="fas fa-code-branch"></i> This Website</h3>
-        <p class="preview">[placeholder]</p>
-        <div class="details">
-          <p>Full source code is available on <a href="https://github.com/CollinAguiar/collinaguiar.github.io" target="_blank">GitHub</a>.</p>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <section id="skills">
-    <h2><i class="fas fa-tools"></i> Skills</h2>
-    <div class="grid">
-      <div class="card"><h3>[placeholder]</h3><p>[placeholder]</p></div>
-      <div class="card"><h3>[placeholder]</h3><p>[placeholder]</p></div>
-      <div class="card"><h3>[placeholder]</h3><p>[placeholder]</p></div>
+      <div class="card expandable" id="crypto-card">
+        <h3><i class="fas fa-lock"></i> Cryptography Playground</h3>
+        <button class="expand-btn">Launch Tool</button>
+        <div class="expansion-content" id="crypto-tool">
+          <textarea id="input" placeholder="Type here..."></textarea>
+          <select id="cipher">
+            <option value="caesar">Caesar</option>
+            <option value="vigenere">Vigenère</option>
+          </select>
+          <input type="text" id="key" placeholder="Key/password">
+          <div class="crypto-buttons">
+            <button id="encrypt">Encrypt</button>
+            <button id="decrypt">Decrypt</button>
+          </div>
+          <pre id="output"></pre>
+        </div>
+      </div>
     </div>
   </section>
 
   <section id="contact">
-    <h2><i class="fas fa-envelope"></i> Get In Touch</h2>
+    <h2 class="section-title"><i class="fas fa-envelope"></i> Get In Touch</h2>
     <p>[placeholder]</p>
     <div class="cta-buttons">
       <a href="mailto:collin.j.aguiar@gmail.com"><i class="fas fa-paper-plane"></i> [placeholder]</a>
