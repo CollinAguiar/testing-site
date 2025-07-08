@@ -1,28 +1,30 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Collin Aguiar's Portfolio</title>
-  <link rel="stylesheet" href="main.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.7.0/dist/vanilla-tilt.min.js"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Collin Aguiar's Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="main.css" />
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.7.0/dist/vanilla-tilt.min.js"></script>
 </head>
 <body>
-  <nav>
-    <div class="logo"><i class="fas fa-shield-alt"></i> Collin Aguiar</div>
-    <div class="nav-links">
-      <a href="#about"><i class="fas fa-user"></i> About</a>
-      <a href="#projects"><i class="fas fa-code"></i> Projects</a>
-      <a href="#skills"><i class="fas fa-tools"></i> Skills</a>
-      <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
-    </div>
-  </nav>
+<nav id="navbar">
+  <div class="logo"><i class="fas fa-shield-alt"></i> Collin Aguiar</div>
+  <div class="nav-links">
+    <a href="#about"><i class="fas fa-user"></i> About</a>
+    <a href="#projects"><i class="fas fa-code"></i> Projects</a>
+    <a href="#skills"><i class="fas fa-tools"></i> Skills</a>
+    <a href="#goals"><i class="fas fa-bullseye"></i> Goals</a>
+    <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
+  </div>
+</nav>
 
-  <canvas id="matrix"></canvas>
+<canvas id="matrix"></canvas>
 
-  <section class="hero">
+<main>
+  <section class="hero" id="hero">
     <h1 class="glitch" data-text="[placeholder]">[placeholder]</h1>
     <p>[placeholder]</p>
     <div class="cta-buttons">
@@ -31,53 +33,136 @@
     </div>
   </section>
 
-  <section id="about">
+  <section id="about" class="section">
     <h2 class="section-title"><i class="fas fa-user"></i> About Me</h2>
-    <p class="fade-up">[placeholder]</p>
+    <p class="fade-up preview-text">[placeholder]</p>
   </section>
 
-  <section id="projects">
+  <section id="projects" class="section">
     <h2 class="section-title"><i class="fas fa-code"></i> Projects</h2>
-    <div class="grid">
-      <div class="card fade-up" data-tilt data-tilt-max="8" data-tilt-glare>
-        <h3><i class="fas fa-lock"></i> Cryptography Playground</h3>
-        <button class="expand-btn">Launch Tool</button>
-        <div class="expandable-content"></div>
-      </div>
-      <div class="card fade-up" data-tilt data-tilt-max="8" data-tilt-glare>
+    <div class="grid bubbles-container">
+      <div class="bubble" data-type="project" tabindex="0">
         <h3><i class="fas fa-network-wired"></i> Network Packet Visualizer</h3>
-        <button class="expand-btn">Launch Tool</button>
-        <div class="expandable-content"></div>
+        <p class="preview-text">Simulates network traffic packets with smooth animations.</p>
+        <div class="full-content">
+          <div id="network-visualizer"></div>
+        </div>
+        <button class="close-btn" aria-label="Close">×</button>
       </div>
-      <div class="card fade-up" data-tilt data-tilt-max="8" data-tilt-glare>
+
+      <div class="bubble" data-type="project" tabindex="0">
+        <h3><i class="fas fa-lock"></i> Cryptography Playground</h3>
+        <p class="preview-text">Modern encryption/decryption tool with adaptive inputs.</p>
+        <div class="full-content crypto-container">
+          <label for="crypto-method">Method</label>
+          <select id="crypto-method">
+            <option value="caesar">Caesar Cipher</option>
+            <option value="aes">AES Encryption</option>
+            <option value="base64">Base64 Encode/Decode</option>
+          </select>
+          <label for="crypto-key" id="key-label">Shift (1-26)</label>
+          <input type="text" id="crypto-key" placeholder="Shift (1-26)" />
+          <label for="crypto-input">Input</label>
+          <textarea id="crypto-input" rows="4" placeholder="Enter your text here..."></textarea>
+          <div class="crypto-buttons">
+            <button id="encrypt-btn">Encrypt</button>
+            <button id="decrypt-btn">Decrypt</button>
+          </div>
+          <label for="crypto-output">Output</label>
+          <textarea id="crypto-output" rows="4" readonly></textarea>
+        </div>
+        <button class="close-btn" aria-label="Close">×</button>
+      </div>
+
+      <div class="bubble" data-type="project" tabindex="0">
         <h3><i class="fas fa-globe"></i> This Website</h3>
-        <p><a href="https://github.com/CollinAguiar/collinaguiar.github.io" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> GitHub Repository</a></p>
+        <p class="preview-text">Check out the source code for this portfolio on GitHub.</p>
+        <div class="full-content website-link">
+          <a href="https://github.com/CollinAguiar/collinaguiar.github.io" target="_blank" rel="noopener">View GitHub Repository <i class="fas fa-external-link-alt"></i></a>
+        </div>
+        <button class="close-btn" aria-label="Close">×</button>
       </div>
     </div>
   </section>
 
-  <section id="skills">
+  <section id="skills" class="section">
     <h2 class="section-title"><i class="fas fa-tools"></i> Skills</h2>
-    <div class="grid">
-      <div class="card fade-up" data-tilt><h3>[placeholder]</h3><p>[placeholder]</p></div>
-      <div class="card fade-up" data-tilt><h3>[placeholder]</h3><p>[placeholder]</p></div>
-      <div class="card fade-up" data-tilt><h3>[placeholder]</h3><p>[placeholder]</p></div>
+    <div class="grid bubbles-container">
+      <div class="bubble" data-type="skill" tabindex="0">
+        <h3>Programming</h3>
+        <p class="preview-text">Python, Java, JavaScript, Bash</p>
+        <div class="full-content">
+          <p>Experienced with writing clean, maintainable code in multiple languages including Python, Java, JavaScript, and Bash scripting.</p>
+        </div>
+        <button class="close-btn" aria-label="Close">×</button>
+      </div>
+
+      <div class="bubble" data-type="skill" tabindex="0">
+        <h3>Cybersecurity</h3>
+        <p class="preview-text">Ethical hacking, penetration testing, vulnerability assessment</p>
+        <div class="full-content">
+          <p>Skilled in identifying and mitigating vulnerabilities using penetration testing tools and ethical hacking techniques.</p>
+        </div>
+        <button class="close-btn" aria-label="Close">×</button>
+      </div>
+
+      <div class="bubble" data-type="skill" tabindex="0">
+        <h3>Server & OS</h3>
+        <p class="preview-text">Linux (Arch, Debian), Windows (7, 10, 11)</p>
+        <div class="full-content">
+          <p>Experienced managing Linux servers and optimizing operating systems for performance and security.</p>
+        </div>
+        <button class="close-btn" aria-label="Close">×</button>
+      </div>
     </div>
   </section>
 
-  <section id="contact">
+  <section id="goals" class="section">
+    <h2 class="section-title"><i class="fas fa-bullseye"></i> Future Goals</h2>
+    <div class="grid bubbles-container">
+      <div class="bubble" data-type="goal" tabindex="0">
+        <h3>Learn New Languages</h3>
+        <p class="preview-text">Improve skills in Rust, C, and PHP.</p>
+        <div class="full-content">
+          <p>Planning to master Rust for system programming, C for embedded systems, and PHP for web development.</p>
+        </div>
+        <button class="close-btn" aria-label="Close">×</button>
+      </div>
+
+      <div class="bubble" data-type="goal" tabindex="0">
+        <h3>Internship</h3>
+        <p class="preview-text">Secure a cybersecurity or software engineering internship.</p>
+        <div class="full-content">
+          <p>Aiming to gain real-world experience through internships in cybersecurity or software development fields.</p>
+        </div>
+        <button class="close-btn" aria-label="Close">×</button>
+      </div>
+
+      <div class="bubble" data-type="goal" tabindex="0">
+        <h3>Open Source</h3>
+        <p class="preview-text">Contribute to security and networking projects.</p>
+        <div class="full-content">
+          <p>Looking forward to contributing meaningful code to open source projects focused on security and networking technologies.</p>
+        </div>
+        <button class="close-btn" aria-label="Close">×</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section">
     <h2 class="section-title"><i class="fas fa-envelope"></i> Get In Touch</h2>
-    <p class="fade-up">[placeholder]</p>
+    <p class="fade-up preview-text">[placeholder]</p>
     <div class="cta-buttons fade-up">
       <a href="mailto:collin.j.aguiar@gmail.com"><i class="fas fa-paper-plane"></i> [placeholder]</a>
       <a href="CollinAguiarResume2025.pdf" target="_blank"><i class="fas fa-file-download"></i> [placeholder]</a>
     </div>
   </section>
+</main>
 
-  <footer>
-    <p>[placeholder]</p>
-  </footer>
+<footer id="footer">
+  <p>© 2025 Collin Aguiar. All rights reserved.</p>
+</footer>
 
-  <script src="main.js"></script>
+<script src="main.js"></script>
 </body>
 </html>

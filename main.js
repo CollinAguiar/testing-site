@@ -1,267 +1,251 @@
-document.addEventListener('DOMContentLoaded', () => {
-  VanillaTilt.init(document.querySelectorAll('[data-tilt]'));
-
-  // Matrix background
-  const c = document.getElementById('matrix');
-  const ctx = c.getContext('2d');
-  let w, h, font = 14, columns, drops;
-
-  function resize() {
-    w = c.width = window.innerWidth;
-    h = c.height = window.innerHeight;
-    columns = Math.floor(w / font);
-    drops = Array(columns).fill(1);
+// Navbar hide/show on scroll
+let lastScroll = 0;
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  const currentScroll = window.pageYOffset;
+  if (currentScroll <= 0) {
+    navbar.classList.remove('hide');
+    return;
   }
-  resize();
-  window.addEventListener('resize', resize);
-
-  const chars = '01';
-  function draw() {
-    ctx.fillStyle = 'rgba(0,0,0,0.05)';
-    ctx.fillRect(0, 0, w, h);
-    ctx.fillStyle = '#ff003c';
-    ctx.font = font + 'px monospace';
-    for (let i = 0; i < drops.length; i++) {
-      const text = chars[Math.floor(Math.random() * chars.length)];
-      ctx.fillText(text, i * font, drops[i] * font);
-      if (drops[i] * font > h && Math.random() > 0.975) drops[i] = 0;
-      drops[i]++;
-    }
-    requestAnimationFrame(draw);
+  if (currentScroll > lastScroll) {
+    navbar.classList.add('hide');
+  } else {
+    navbar.classList.remove('hide');
   }
-  draw();
+  lastScroll = currentScroll;
+});
 
-  // Expandable cards
-  const cards = document.querySelectorAll('.card');
-  cards.forEach(card => {
-    const btn = card.querySelector('.expand-btn');
-    if (!btn) return;
-
-    btn.addEventListener('click', () => {
-      const content = card.querySelector('.expandable-content');
-      if (content.style.maxHeight) {
-        content.style.maxHeight = null;
-        btn.textContent = 'Launch Tool';
-      } else {
-        // Collapse other expanded cards
-        document.querySelectorAll('.expandable-content').forEach(c => {
-          if (c !== content) {
-            c.style.maxHeight = null;
-            const siblingBtn = c.parentElement.querySelector('.expand-btn');
-            if (siblingBtn) siblingBtn.textContent = 'Launch Tool';
-          }
-        });
-
-        if (card.querySelector('h3').textContent.includes('Cryptography Playground')) {
-          loadCryptoPlayground(content);
-        } else if (card.querySelector('h3').textContent.includes('Network Packet Visualizer')) {
-          loadNetworkVisualizer(content);
-        }
-
-        content.style.maxHeight = content.scrollHeight + 'px';
-        btn.textContent = 'Close Tool';
-      }
-    });
+// Fade-up animation on scroll
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('is-visible');
   });
+});
+document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
 
-  function loadCryptoPlayground(container) {
-    container.innerHTML = `
-      <div class="crypto-container">
-        <label for="cipher-select">Cipher:</label>
-        <select id="cipher-select">
-          <option value="caesar">Caesar Cipher</option>
-          <option value="vigenere">Vigenère Cipher</option>
-          <option value="base64">Base64</option>
-          <option value="xor">XOR Cipher</option>
-        </select>
-        <label for="crypto-input">Input Text:</label>
-        <textarea id="crypto-input" rows="3"></textarea>
-        <label for="key-input" id="key-label">Shift (1-26)</label>
-        <input type="text" id="key-input" placeholder="Shift (1-26)" />
-        <div class="crypto-buttons">
-          <button id="encrypt-btn">Encrypt</button>
-          <button id="decrypt-btn">Decrypt</button>
-        </div>
-        <label for="crypto-output">Output:</label>
-        <textarea id="crypto-output" rows="3" readonly></textarea>
-      </div>
-    `;
+// Initialize Vanilla Tilt for bubbles
+VanillaTilt.init(document.querySelectorAll('.bubble'), {
+  max: 10,
+  speed: 400,
+  glare: true,
+  'max-glare': 0.3,
+  scale: 1.05
+});
 
-    const cipherSelect = container.querySelector('#cipher-select');
-    const inputText = container.querySelector('#crypto-input');
-    const keyInput = container.querySelector('#key-input');
-    const keyLabel = container.querySelector('#key-label');
-    const output = container.querySelector('#crypto-output');
-    const encryptBtn = container.querySelector('#encrypt-btn');
-    const decryptBtn = container.querySelector('#decrypt-btn');
+// Matrix background
+const matrix = document.getElementById('matrix');
+const ctx = matrix.getContext('2d');
+let w, h;
+const fontSize = 14;
+let columns;
+let drops;
 
-    function updateKeyInput() {
-      if (cipherSelect.value === 'caesar') {
-        keyInput.placeholder = 'Shift (1-26)';
-        keyInput.type = 'number';
-        keyInput.min = 1;
-        keyInput.max = 26;
-        keyInput.value = '';
-        keyInput.removeAttribute('readonly');
-        keyLabel.textContent = 'Shift (1-26)';
-      } else if (cipherSelect.value === 'vigenere') {
-        keyInput.placeholder = 'Key (letters only)';
-        keyInput.type = 'text';
-        keyInput.value = '';
-        keyInput.removeAttribute('readonly');
-        keyLabel.textContent = 'Key (letters only)';
-      } else if (cipherSelect.value === 'base64') {
-        keyInput.placeholder = 'No key needed';
-        keyInput.type = 'text';
-        keyInput.value = '';
-        keyInput.setAttribute('readonly', 'readonly');
-        keyLabel.textContent = 'No key needed';
-      } else if (cipherSelect.value === 'xor') {
-        keyInput.placeholder = 'Key (any text)';
-        keyInput.type = 'text';
-        keyInput.value = '';
-        keyInput.removeAttribute('readonly');
-        keyLabel.textContent = 'Key (any text)';
-      }
-      output.value = '';
-    }
-    updateKeyInput();
-    cipherSelect.addEventListener('change', updateKeyInput);
+function resizeMatrix() {
+  w = matrix.width = window.innerWidth;
+  h = matrix.height = window.innerHeight;
+  columns = Math.floor(w / fontSize);
+  drops = Array(columns).fill(1);
+}
+resizeMatrix();
+window.addEventListener('resize', resizeMatrix);
 
-    function caesar(str, shift, decrypt = false) {
-      if (decrypt) shift = 26 - shift;
-      let out = '';
-      for (let c of str) {
-        let code = c.charCodeAt(0);
-        if (code >= 65 && code <= 90) {
-          out += String.fromCharCode((code - 65 + shift) % 26 + 65);
-        } else if (code >= 97 && code <= 122) {
-          out += String.fromCharCode((code - 97 + shift) % 26 + 97);
-        } else out += c;
-      }
-      return out;
-    }
+const matrixChars = '01';
 
-    function vigenere(str, key, decrypt = false) {
-      key = key.toLowerCase();
-      let out = '';
-      for (let i = 0, j = 0; i < str.length; i++) {
-        let c = str[i];
-        let code = c.charCodeAt(0);
-        if ((code >= 65 && code <= 90) || (code >= 97 && code <= 122)) {
-          let base = code >= 97 ? 97 : 65;
-          let keyVal = key.charCodeAt(j % key.length) - 97;
-          if (decrypt) keyVal = 26 - keyVal;
-          out += String.fromCharCode((code - base + keyVal) % 26 + base);
-          j++;
-        } else out += c;
-      }
-      return out;
-    }
-
-    function base64Encode(str) {
-      try {
-        return btoa(unescape(encodeURIComponent(str)));
-      } catch {
-        return 'Invalid input';
-      }
-    }
-
-    function base64Decode(str) {
-      try {
-        return decodeURIComponent(escape(atob(str)));
-      } catch {
-        return 'Invalid input';
-      }
-    }
-
-    function xorCipher(str, keyStr) {
-      if (!keyStr) return 'Enter a key for XOR cipher.';
-      let out = '';
-      for (let i = 0; i < str.length; i++) {
-        out += String.fromCharCode(str.charCodeAt(i) ^ keyStr.charCodeAt(i % keyStr.length));
-      }
-      return out;
-    }
-
-    encryptBtn.onclick = () => {
-      const text = inputText.value;
-      const k = keyInput.value;
-      if (cipherSelect.value === 'base64') {
-        output.value = base64Encode(text);
-        return;
-      }
-      if (cipherSelect.value === 'caesar') {
-        const shift = parseInt(k);
-        if (isNaN(shift) || shift < 1 || shift > 26) {
-          output.value = 'Please enter a valid shift between 1 and 26.';
-          return;
-        }
-        output.value = caesar(text, shift, false);
-        return;
-      }
-      if (cipherSelect.value === 'vigenere') {
-        if (!k.match(/^[a-zA-Z]+$/)) {
-          output.value = 'Key must contain letters only.';
-          return;
-        }
-        output.value = vigenere(text, k, false);
-        return;
-      }
-      if (cipherSelect.value === 'xor') {
-        if (!k) {
-          output.value = 'Please enter a key for XOR cipher.';
-          return;
-        }
-        output.value = xorCipher(text, k);
-        return;
-      }
-    };
-
-    decryptBtn.onclick = () => {
-      const text = inputText.value;
-      const k = keyInput.value;
-      if (cipherSelect.value === 'base64') {
-        output.value = base64Decode(text);
-        return;
-      }
-      if (cipherSelect.value === 'caesar') {
-        const shift = parseInt(k);
-        if (isNaN(shift) || shift < 1 || shift > 26) {
-          output.value = 'Please enter a valid shift between 1 and 26.';
-          return;
-        }
-        output.value = caesar(text, shift, true);
-        return;
-      }
-      if (cipherSelect.value === 'vigenere') {
-        if (!k.match(/^[a-zA-Z]+$/)) {
-          output.value = 'Key must contain letters only.';
-          return;
-        }
-        output.value = vigenere(text, k, true);
-        return;
-      }
-      if (cipherSelect.value === 'xor') {
-        if (!k) {
-          output.value = 'Please enter a key for XOR cipher.';
-          return;
-        }
-        output.value = xorCipher(text, k);
-        return;
-      }
-    };
+function drawMatrix() {
+  ctx.fillStyle = 'rgba(0,0,0,0.05)';
+  ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = '#ff003c';
+  ctx.font = fontSize + 'px monospace';
+  for (let i = 0; i < drops.length; i++) {
+    const text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
+    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+    if (drops[i] * fontSize > h && Math.random() > 0.975) drops[i] = 0;
+    drops[i]++;
   }
+  requestAnimationFrame(drawMatrix);
+}
+drawMatrix();
 
-  function loadNetworkVisualizer(container) {
-    container.innerHTML = `
-      <div class="network-visualizer">
-        <div class="packet" style="--delay: 0s; --x: 10%; --y: 20%;"></div>
-        <div class="packet" style="--delay: 1s; --x: 30%; --y: 40%;"></div>
-        <div class="packet" style="--delay: 2s; --x: 50%; --y: 60%;"></div>
-        <div class="packet" style="--delay: 3s; --x: 70%; --y: 30%;"></div>
-        <div class="packet" style="--delay: 4s; --x: 90%; --y: 50%;"></div>
-      </div>
-    `;
+// Bubble expand/collapse logic
+const bubbles = document.querySelectorAll('.bubble');
+
+function closeBubble(bubble) {
+  bubble.classList.remove('expanded');
+  document.body.style.overflow = '';
+}
+
+function openBubble(bubble) {
+  bubbles.forEach(b => closeBubble(b));
+  bubble.classList.add('expanded');
+  bubble.focus();
+  document.body.style.overflow = 'hidden';
+}
+
+bubbles.forEach(bubble => {
+  bubble.addEventListener('click', e => {
+    if (!bubble.classList.contains('expanded') && !e.target.classList.contains('close-btn')) {
+      openBubble(bubble);
+    }
+  });
+  bubble.querySelector('.close-btn').addEventListener('click', e => {
+    e.stopPropagation();
+    closeBubble(bubble);
+  });
+  bubble.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      if (!bubble.classList.contains('expanded')) {
+        openBubble(bubble);
+      }
+    } else if (e.key === 'Escape') {
+      if (bubble.classList.contains('expanded')) {
+        closeBubble(bubble);
+      }
+    }
+  });
+});
+
+// Cryptography Playground logic
+const cryptoMethod = document.getElementById('crypto-method');
+const cryptoKey = document.getElementById('crypto-key');
+const keyLabel = document.getElementById('key-label');
+const cryptoInput = document.getElementById('crypto-input');
+const cryptoOutput = document.getElementById('crypto-output');
+const encryptBtn = document.getElementById('encrypt-btn');
+const decryptBtn = document.getElementById('decrypt-btn');
+
+function updateKeyLabel() {
+  if (!cryptoMethod || !cryptoKey || !keyLabel) return;
+  switch (cryptoMethod.value) {
+    case 'caesar':
+      keyLabel.textContent = 'Shift (1-26)';
+      cryptoKey.placeholder = 'Shift (1-26)';
+      break;
+    case 'aes':
+      keyLabel.textContent = 'Password';
+      cryptoKey.placeholder = 'Enter password';
+      break;
+    case 'base64':
+      keyLabel.textContent = 'No key needed';
+      cryptoKey.placeholder = '';
+      cryptoKey.value = '';
+      break;
+  }
+}
+cryptoMethod.addEventListener('change', updateKeyLabel);
+updateKeyLabel();
+
+function caesarShift(str, amount) {
+  if (amount < 0) amount = 26 + (amount % 26);
+  let output = '';
+  for (let i = 0; i < str.length; i++) {
+    let c = str.charCodeAt(i);
+    if (c >= 65 && c <= 90) {
+      output += String.fromCharCode(((c - 65 + amount) % 26) + 65);
+    } else if (c >= 97 && c <= 122) {
+      output += String.fromCharCode(((c - 97 + amount) % 26) + 97);
+    } else {
+      output += str.charAt(i);
+    }
+  }
+  return output;
+}
+
+function aesEncryptDecrypt(input, password, encrypt = true) {
+  if (!password) return '';
+  try {
+    if (encrypt) {
+      return CryptoJS.AES.encrypt(input, password).toString();
+    } else {
+      const bytes = CryptoJS.AES.decrypt(input, password);
+      return bytes.toString(CryptoJS.enc.Utf8);
+    }
+  } catch {
+    return '';
+  }
+}
+
+encryptBtn.addEventListener('click', () => {
+  let input = cryptoInput.value;
+  let key = cryptoKey.value;
+  if (!input) return;
+  switch (cryptoMethod.value) {
+    case 'caesar':
+      let shift = parseInt(key);
+      if (isNaN(shift) || shift < 1 || shift > 26) {
+        cryptoOutput.value = 'Invalid shift value';
+        return;
+      }
+      cryptoOutput.value = caesarShift(input, shift);
+      break;
+    case 'aes':
+      if (!key) {
+        cryptoOutput.value = 'Password required';
+        return;
+      }
+      cryptoOutput.value = aesEncryptDecrypt(input, key, true);
+      break;
+    case 'base64':
+      cryptoOutput.value = btoa(input);
+      break;
   }
 });
+
+decryptBtn.addEventListener('click', () => {
+  let input = cryptoInput.value;
+  let key = cryptoKey.value;
+  if (!input) return;
+  switch (cryptoMethod.value) {
+    case 'caesar':
+      let shift = parseInt(key);
+      if (isNaN(shift) || shift < 1 || shift > 26) {
+        cryptoOutput.value = 'Invalid shift value';
+        return;
+      }
+      cryptoOutput.value = caesarShift(input, 26 - shift);
+      break;
+    case 'aes':
+      if (!key) {
+        cryptoOutput.value = 'Password required';
+        return;
+      }
+      cryptoOutput.value = aesEncryptDecrypt(input, key, false);
+      break;
+    case 'base64':
+      try {
+        cryptoOutput.value = atob(input);
+      } catch {
+        cryptoOutput.value = 'Invalid Base64 string';
+      }
+      break;
+  }
+});
+
+// Load CryptoJS from CDN for AES (insert script dynamically)
+const cryptoScript = document.createElement('script');
+cryptoScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js';
+cryptoScript.onload = () => {
+  // Now AES encrypt/decrypt works
+};
+document.head.appendChild(cryptoScript);
+
+// Network Visualizer animation
+const visualizerContainer = document.getElementById('network-visualizer');
+
+function createPacket() {
+  const packet = document.createElement('div');
+  packet.className = 'packet';
+  packet.style.left = Math.random() * 100 + '%';
+  packet.style.animationDuration = (3 + Math.random() * 2) + 's';
+  visualizerContainer.appendChild(packet);
+  setTimeout(() => {
+    packet.remove();
+  }, 5000);
+}
+
+function startVisualizer() {
+  if (!visualizerContainer) return;
+  setInterval(createPacket, 400);
+}
+
+startVisualizer();
