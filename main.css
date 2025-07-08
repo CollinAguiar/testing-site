@@ -1,13 +1,13 @@
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-  background: black;
-  color: #f0f0f0;
   font-family: 'Inter', sans-serif;
+  background: #0d0d0d;
+  color: #f2f2f2;
   overflow-x: hidden;
 }
 
@@ -20,11 +20,7 @@ nav {
   justify-content: space-between;
   padding: 1rem 2rem;
   z-index: 1000;
-  transition: top 0.3s ease;
-}
-
-nav.hidden {
-  top: -100px;
+  transition: top 0.3s;
 }
 
 .logo {
@@ -33,126 +29,179 @@ nav.hidden {
 }
 
 .nav-links a {
-  color: #f0f0f0;
   margin-left: 1.5rem;
   text-decoration: none;
+  color: #f2f2f2;
+  font-weight: 500;
 }
 
-#matrix {
+canvas#matrix {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: -1;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .hero {
-  margin-top: 100px;
-  padding: 6rem 2rem 4rem;
+  padding: 10rem 2rem 4rem;
   text-align: center;
+  background: transparent;
+  z-index: 2;
+  position: relative;
 }
 
 .glitch {
   font-size: 3rem;
-  color: red;
   position: relative;
+  color: red;
+  text-transform: uppercase;
 }
 
 .glitch::before,
 .glitch::after {
   content: attr(data-text);
   position: absolute;
-  left: 0;
+  top: 0;
   width: 100%;
+  overflow: hidden;
+  color: #f00;
 }
 
 .glitch::before {
   left: 2px;
-  color: #0ff;
-  animation: glitch 2s infinite linear alternate-reverse;
+  text-shadow: -2px 0 blue;
+  animation: glitch 1s infinite linear alternate-reverse;
 }
 
 .glitch::after {
   left: -2px;
-  color: #f0f;
-  animation: glitch 1.5s infinite linear alternate;
+  text-shadow: -2px 0 lime;
+  animation: glitch 0.8s infinite linear alternate-reverse;
 }
 
 @keyframes glitch {
-  0% { top: -1px; }
-  20% { top: 1px; }
-  40% { top: -2px; }
-  60% { top: 2px; }
-  80% { top: -1px; }
-  100% { top: 1px; }
+  0% {
+    clip-path: inset(0 0 40% 0);
+  }
+  50% {
+    clip-path: inset(60% 0 20% 0);
+  }
+  100% {
+    clip-path: inset(10% 0 70% 0);
+  }
 }
 
-.cards-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding: 2rem;
-  gap: 2rem;
-}
-
-.card-preview {
-  background: #111;
-  border: 1px solid #333;
-  padding: 1.5rem;
-  width: 280px;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.card-preview:hover {
-  transform: scale(1.03);
-}
-
-.card-preview p {
+.hero-subtext {
   margin-top: 0.5rem;
   color: #aaa;
 }
 
-.card-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.95);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-  padding: 2rem;
+.cta-buttons {
+  margin-top: 1.5rem;
 }
 
-.card-modal.active {
-  display: flex;
+.cta-buttons a {
+  text-decoration: none;
+  background: #ff003c;
+  color: white;
+  padding: 0.7rem 1.5rem;
+  margin: 0 0.5rem;
+  border-radius: 3px;
+  transition: background 0.3s;
 }
 
-.modal-content {
-  background: #111;
-  padding: 2rem;
-  max-width: 600px;
-  width: 100%;
-  border: 1px solid #444;
-  overflow-y: auto;
-  max-height: 90vh;
+.cta-buttons a:hover {
+  background: #cc002e;
 }
 
-.close-btn {
-  background: none;
-  color: #fff;
-  font-size: 1.5rem;
-  border: none;
-  float: right;
+section {
+  padding: 4rem 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.card {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 6px;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  transition: all 0.4s ease;
   cursor: pointer;
+  overflow: hidden;
+}
+
+.card h2 {
+  margin-bottom: 0.8rem;
+  font-size: 1.4rem;
+}
+
+.card.preview .full {
+  display: none;
+}
+
+.card.expanded .preview p {
+  display: none;
+}
+
+.card.expanded .full {
+  display: block;
+  margin-top: 1rem;
+}
+
+input, textarea, select, button {
+  margin-top: 0.6rem;
+  display: block;
+  width: 100%;
+  background: #111;
+  color: white;
+  border: 1px solid #444;
+  padding: 0.5rem;
+  border-radius: 3px;
+}
+
+button {
+  cursor: pointer;
+  background: #ff003c;
+}
+
+button:hover {
+  background: #cc002e;
+}
+
+#networkVisualizer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  margin-top: 1rem;
+}
+
+.node {
+  background: #222;
+  padding: 1rem;
+  border-radius: 5px;
+  text-align: center;
+  flex: 1;
+  margin: 0 1rem;
+}
+
+.packet {
+  width: 20px;
+  height: 20px;
+  background: red;
+  border-radius: 50%;
+  position: absolute;
+  top: 30px;
+  left: 0;
+  animation: none;
 }
 
 footer {
   text-align: center;
-  padding: 1.5rem;
+  padding: 2rem;
+  font-size: 0.9rem;
+  color: #777;
   background: #111;
-  color: #666;
-  margin-top: 3rem;
 }
