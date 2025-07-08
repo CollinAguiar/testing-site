@@ -1,0 +1,226 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background-color: #000;
+  color: #ccc;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+nav {
+  position: fixed;
+  width: 100%;
+  background: #111;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  border-bottom: 2px solid #ff003c;
+  z-index: 999;
+}
+
+nav .logo {
+  color: #ff003c;
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: 1.5px;
+}
+
+nav .nav-links a {
+  color: #ccc;
+  margin-left: 2rem;
+  font-weight: 600;
+  transition: color 0.3s ease;
+  text-decoration: none;
+}
+
+nav .nav-links a:hover {
+  color: #ff003c;
+}
+
+#matrix {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+section {
+  padding: 6rem 2rem 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto 4rem auto;
+  position: relative;
+  z-index: 1;
+}
+
+.hero {
+  text-align: center;
+  padding-top: 8rem;
+  padding-bottom: 6rem;
+  color: #ff003c;
+  z-index: 2;
+}
+
+.glitch {
+  font-size: 3.5rem;
+  font-weight: 900;
+  position: relative;
+  color: #ff003c;
+  letter-spacing: 3px;
+  animation: glitchAnim 2s infinite;
+}
+
+@keyframes glitchAnim {
+  0% {
+    text-shadow: 2px 0 #ff003c, -2px 0 #ff3366;
+  }
+  50% {
+    text-shadow: -2px 0 #ff003c, 2px 0 #ff3366;
+  }
+  100% {
+    text-shadow: 2px 0 #ff003c, -2px 0 #ff3366;
+  }
+}
+
+.cta-buttons a {
+  display: inline-block;
+  margin: 1rem 1rem 0 1rem;
+  padding: 0.8rem 2rem;
+  border: 2px solid #ff003c;
+  color: #ff003c;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 30px;
+  transition: background-color 0.4s ease, color 0.4s ease;
+  box-shadow: 0 0 8px #ff003c66;
+}
+
+.cta-buttons a:hover {
+  background-color: #ff003c;
+  color: #000;
+  box-shadow: 0 0 20px #ff003ccc;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: #ff003c;
+  display: inline-block;
+  position: relative;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+  gap: 2rem;
+}
+
+.card {
+  background: #111;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid #ff003c;
+  box-shadow: 0 0 15px #ff003c88;
+  color: #ccc;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 0 25px #ff003ccc, 0 0 40px #ff3366cc;
+  cursor: pointer;
+}
+
+.card h3 {
+  margin-bottom: 1rem;
+  color: #ff003c;
+}
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#about {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 4rem auto;
+  padding: 2rem 1rem;
+  border: 1px solid #ff003c;
+  box-shadow: 0 0 15px #ff003c88;
+  border-radius: 8px;
+  color: #ccc;
+  background: #111;
+}
+
+#about .section-title {
+  position: relative;
+  display: inline-block;
+  color: #ff003c;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+#about .section-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #ff003c, #ff3366, #ff003c);
+  box-shadow: 0 0 8px #ff003c, 0 0 15px #ff3366;
+  animation: glowing-underline 2.5s ease-in-out infinite alternate;
+  border-radius: 2px;
+}
+
+@keyframes glowing-underline {
+  0% {
+    filter: drop-shadow(0 0 4px #ff003c);
+  }
+  100% {
+    filter: drop-shadow(0 0 12px #ff3366);
+  }
+}
+
+footer {
+  text-align: center;
+  padding: 1rem;
+  border-top: 1px solid #ff003c;
+  color: #555;
+  font-size: 0.9rem;
+  user-select: none;
+}
+
+@media (max-width: 600px) {
+  nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  nav .nav-links {
+    margin-top: 0.5rem;
+  }
+  .hero {
+    padding-top: 6rem;
+  }
+  .glitch {
+    font-size: 2.5rem;
+  }
+}
