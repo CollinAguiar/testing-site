@@ -1,147 +1,188 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Collin Aguiar | Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Collin Aguiar's Portfolio</title>
   <link rel="stylesheet" href="main.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.7.0/dist/vanilla-tilt.min.js"></script>
 </head>
 <body>
-  <canvas id="matrix"></canvas>
-
-  <nav id="navbar">
+  <nav>
     <div class="logo"><i class="fas fa-shield-alt"></i> Collin Aguiar</div>
     <div class="nav-links">
       <a href="#about"><i class="fas fa-user"></i> About</a>
-      <a href="#projects"><i class="fas fa-star"></i> Featured Projects</a>
-      <a href="#skills"><i class="fas fa-laptop-code"></i> Skills</a>
+      <a href="#projects"><i class="fas fa-code"></i> Projects</a>
+      <a href="#skills"><i class="fas fa-tools"></i> Skills</a>
+      <a href="#goals"><i class="fas fa-bullseye"></i> Goals</a>
       <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
     </div>
   </nav>
 
-  <header class="hero">
+  <canvas id="matrix"></canvas>
+
+  <section class="hero">
     <h1 class="glitch" data-text="Collin Aguiar">Collin Aguiar</h1>
-    <p class="subtext">Cybersecurity • Programming • Hardware</p>
+    <p class="hero-subtext fancy-text">I'm Collin, a high schooler with a deep interest in cybersecurity and coding.</p>
     <div class="cta-buttons">
-      <a href="#projects"><i class="fas fa-rocket"></i> Projects</a>
-      <a href="#contact"><i class="fas fa-envelope"></i> Say Hello</a>
+      <a href="#projects"><i class="fas fa-rocket"></i> Check Projects</a>
+      <a href="mailto:collin.j.aguiar@gmail.com"><i class="fas fa-briefcase"></i> Contact Me</a>
     </div>
-  </header>
+  </section>
 
-  <main>
-    <section id="about" class="section">
-      <div class="bubble">
-        <h2><i class="fas fa-user"></i> About Me</h2>
-        <p class="preview">I'm Collin, a high schooler with a deep interest in cybersecurity and coding...</p>
-        <div class="expanded-content">
-          <p>I build tools, tinker with hardware, and explore everything from low-level OS tweaks to high-level security protocols. I'm constantly learning and pushing myself through personal projects.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="projects" class="section">
-      <h2 class="section-title"><i class="fas fa-star"></i> Featured Projects</h2>
-      <div class="grid">
-        <div class="bubble">
-          <h3><i class="fas fa-lock"></i> Cryptography Playground</h3>
-          <p class="preview">Play around with encryption and hashing algorithms like AES, Caesar, SHA-256...</p>
-          <div class="expanded-content">
-            <label for="cryptoMethod">Method:</label>
-            <select id="cryptoMethod">
-              <option value="caesar">Caesar Cipher</option>
-              <option value="aes">AES</option>
-              <option value="sha256">SHA-256</option>
-            </select>
-            <input type="text" id="cryptoKey" placeholder="Shift (1-26)" />
-            <textarea id="cryptoInput" placeholder="Enter text..."></textarea>
-            <button id="cryptoRun">Run</button>
-            <textarea id="cryptoOutput" readonly></textarea>
-          </div>
-        </div>
-
-        <div class="bubble">
-          <h3><i class="fas fa-server"></i> Hardware Setup</h3>
-          <p class="preview">My personal desktop, server, laptop, and SBC setups all optimized for dev & testing...</p>
-          <div class="expanded-content">
-            <ul>
-              <li><strong>Desktop:</strong> Ryzen 5 2600, RTX 4060 Ti, 32GB RAM</li>
-              <li><strong>Server:</strong> Headless Linux, network-attached storage, remote SSH admin</li>
-              <li><strong>Laptop:</strong> ChromeOS dual-booted with Arch Linux</li>
-              <li><strong>SBC:</strong> Raspberry Pi 4 running Pi-hole and wireguard</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="bubble">
-          <h3><i class="fas fa-code-branch"></i> This Website</h3>
-          <p class="preview">Custom-built from scratch with no frameworks. Fully animated, fully responsive...</p>
-          <div class="expanded-content">
-            <p>Every section is designed to showcase both design and technical skill. Check out the <a href="https://github.com/CollinAguiar/testing.collinaguiar.github.io" target="_blank">GitHub repo</a>.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="skills" class="section">
-      <h2 class="section-title"><i class="fas fa-laptop-code"></i> Skills</h2>
-      <div class="grid">
-        <div class="bubble">
-          <h3>Programming</h3>
-          <p class="preview">Python, Bash, JavaScript, C, Java...</p>
-          <div class="expanded-content">
-            <p>Fluent in a variety of languages, both scripting and compiled. Use them for everything from automation to web dev to exploit dev.</p>
-          </div>
-        </div>
-        <div class="bubble">
-          <h3>Cybersecurity</h3>
-          <p class="preview">CTFs, ethical hacking, network hardening...</p>
-          <div class="expanded-content">
-            <p>Experience with platforms like HackTheBox, VulnHub, and PicoCTF. Knowledge in XSS, CSRF, privilege escalation, and more.</p>
-          </div>
-        </div>
-        <div class="bubble">
-          <h3>Systems</h3>
-          <p class="preview">Arch Linux, headless servers, bootloaders...</p>
-          <div class="expanded-content">
-            <p>I like messing around under the hood. Whether it's optimizing Linux installs or automating server provisioning, I enjoy systems-level work.</p>
-          </div>
-        </div>
-        <div class="bubble">
-          <h3>Other Tools</h3>
-          <p class="preview">Git, SSH, Tmux, Docker, Ghidra...</p>
-          <div class="expanded-content">
-            <p>These are the tools I reach for daily to get things done efficiently across all types of projects.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="contact" class="section">
-      <div class="bubble">
-        <h2><i class="fas fa-envelope"></i> Contact</h2>
-        <p class="preview">Reach out if you want to collaborate or just say hi...</p>
-        <div class="expanded-content">
-          <p>Email me directly at <a href="mailto:collin.j.aguiar@gmail.com">collin.j.aguiar@gmail.com</a>.</p>
-          <button id="resumePreviewBtn">Preview Resume</button>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <div id="resumeModal" class="modal">
-    <div class="modal-content">
-      <span id="closeResume" class="close">&times;</span>
-      <iframe src="CollinAguiarResume2025.pdf" width="100%" height="500px"></iframe>
-      <a href="CollinAguiarResume2025.pdf" class="download" download>Download PDF</a>
+  <section id="about" class="bubble">
+    <h2 class="section-title"><i class="fas fa-user"></i> About Me</h2>
+    <p class="preview-text">I’m passionate about cybersecurity and software development, always building and learning...</p>
+    <button class="read-more">Read More</button>
+    <div class="full-content hidden">
+      <p>I’m Collin, a motivated high school sophomore from Seekonk, MA. I enjoy hands-on projects involving hacking, coding, and system building. My goal is to contribute to the cybersecurity community through innovative solutions and continuous learning.</p>
     </div>
-  </div>
+  </section>
+
+  <section id="projects" class="bubble">
+    <h2 class="section-title"><i class="fas fa-code"></i> Featured Projects</h2>
+    <div class="cards-container">
+      <div class="card project-card" data-project="cryptography">
+        <h3><i class="fas fa-lock"></i> Cryptography Playground</h3>
+        <p class="preview-text">Explore encryption & decryption with interactive tools for ciphers like Caesar, AES, and more...</p>
+        <button class="read-more">Read More</button>
+        <div class="full-content hidden">
+
+          <!-- FULL Cryptography Playground Content -->
+          <div id="cryptography-playground" class="crypto-playground">
+
+            <div class="controls">
+              <label for="crypto-method">Method:</label>
+              <select id="crypto-method" class="input-field">
+                <option value="caesar">Caesar Cipher</option>
+                <option value="aes">AES Encryption</option>
+                <option value="base64">Base64 Encode/Decode</option>
+              </select>
+            </div>
+
+            <div class="controls">
+              <label for="crypto-key" id="key-label">Shift (1-26):</label>
+              <input type="text" id="crypto-key" class="input-field" placeholder="Shift (1-26)" />
+            </div>
+
+            <div class="controls">
+              <label for="crypto-input">Input Text:</label>
+              <textarea id="crypto-input" class="input-field" rows="4" placeholder="Enter text here..."></textarea>
+            </div>
+
+            <div class="controls">
+              <label for="crypto-output">Output Text:</label>
+              <textarea id="crypto-output" class="input-field" rows="4" readonly placeholder="Output will appear here..."></textarea>
+            </div>
+
+            <div class="controls buttons-row">
+              <button id="btn-encrypt" class="button">Encrypt</button>
+              <button id="btn-decrypt" class="button">Decrypt</button>
+              <button id="btn-clear" class="button">Clear</button>
+            </div>
+
+            <p class="crypto-note">* AES uses CryptoJS library for AES (128-bit CBC mode with PKCS7 padding).</p>
+          </div>
+
+        </div>
+      </div>
+      <div class="card project-card" data-project="hardware">
+        <h3><i class="fas fa-microchip"></i> Hardware Setup</h3>
+        <p class="preview-text">Details and photos of my desktop, server, laptop, and single board computer setups...</p>
+        <button class="read-more">Read More</button>
+        <div class="full-content hidden">
+          <div class="hardware-photos">
+            <img src="assets/desktop.jpg" alt="Desktop Setup" />
+            <img src="assets/server.jpg" alt="Server Setup" />
+            <img src="assets/laptop.jpg" alt="Laptop Setup" />
+            <img src="assets/sbc.jpg" alt="Single Board Computer" />
+          </div>
+          <p>Each device is optimized for performance, security, and reliability for my cybersecurity work.</p>
+        </div>
+      </div>
+      <div class="card project-card" data-project="website">
+        <h3><i class="fas fa-globe"></i> This Website</h3>
+        <p class="preview-text">Explore the full source code for this portfolio, built with HTML, CSS, and JavaScript.</p>
+        <button class="read-more">Read More</button>
+        <div class="full-content hidden">
+          <p>The source code is fully open and available on my <a href="https://github.com/CollinAguiar/collinaguiar.github.io" target="_blank" rel="noopener">GitHub repository</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills" class="bubble">
+    <h2 class="section-title"><i class="fas fa-tools"></i> Skills</h2>
+    <div class="cards-container skills-container">
+      <div class="card skill-card">
+        <h3>Programming</h3>
+        <p class="preview-text">Python, Bash, Java, JavaScript, HTML, CSS...</p>
+        <button class="read-more">Read More</button>
+        <div class="full-content hidden">
+          <p>Experienced with Python scripting for automation and security tools. Comfortable with front-end and back-end web development.</p>
+        </div>
+      </div>
+      <div class="card skill-card">
+        <h3>Cybersecurity</h3>
+        <p class="preview-text">Ethical hacking, penetration testing, vulnerability assessment...</p>
+        <button class="read-more">Read More</button>
+        <div class="full-content hidden">
+          <p>Familiar with vulnerability scanning, network security protocols, and participating in CTF challenges like HackTheBox and PicoCTF.</p>
+        </div>
+      </div>
+      <div class="card skill-card">
+        <h3>Operating Systems</h3>
+        <p class="preview-text">Linux (Arch, Debian, Ubuntu), Windows (7,10,11)...</p>
+        <button class="read-more">Read More</button>
+        <div class="full-content hidden">
+          <p>Comfortable managing and troubleshooting multiple OS environments, including custom Arch Linux setups and dual boot configurations.</p>
+        </div>
+      </div>
+      <div class="card skill-card">
+        <h3>Server & Network</h3>
+        <p class="preview-text">Game servers, Linux hosting, network setup and security...</p>
+        <button class="read-more">Read More</button>
+        <div class="full-content hidden">
+          <p>Experience managing dedicated servers, configuring firewalls, and optimizing network performance and security.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="goals" class="bubble">
+    <h2 class="section-title"><i class="fas fa-bullseye"></i> Future Goals</h2>
+    <p class="preview-text">Keep growing skills, contribute to open source, land a cybersecurity internship...</p>
+    <button class="read-more">Read More</button>
+    <div class="full-content hidden">
+      <ul>
+        <li>Master Rust, C, and PHP programming languages.</li>
+        <li>Secure a meaningful internship in cybersecurity or software engineering.</li>
+        <li>Contribute to impactful open-source security projects.</li>
+        <li>Attend top universities such as CMU, MIT, or UMass Amherst.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="contact" class="bubble">
+    <h2 class="section-title"><i class="fas fa-envelope"></i> Get In Touch</h2>
+    <p class="fancy-text">Reach out if you want to collaborate or just say hi.</p>
+    <div class="cta-buttons">
+      <a href="mailto:collin.j.aguiar@gmail.com" class="button"><i class="fas fa-paper-plane"></i> Send Email</a>
+      <button id="resumePreviewBtn" class="button"><i class="fas fa-file-alt"></i> Preview Resume</button>
+    </div>
+    <div id="resumePreview" class="hidden">
+      <iframe src="CollinAguiarResume2025.pdf" frameborder="0" width="100%" height="600px"></iframe>
+      <a href="CollinAguiarResume2025.pdf" download class="button"><i class="fas fa-download"></i> Download Resume</a>
+    </div>
+  </section>
 
   <footer>
-    <p>&copy; 2025 Collin Aguiar</p>
+    <p>© 2025 Collin Aguiar. All rights reserved.</p>
   </footer>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <script src="main.js"></script>
 </body>
 </html>
