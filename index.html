@@ -1,138 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Collin Aguiar's Portfolio</title>
-  <link rel="stylesheet" href="main.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-  <script src="https://kit.fontawesome.com/4e1e36506b.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.7.0/dist/vanilla-tilt.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Collin Aguiar | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="main.css">
 </head>
 <body>
+  <canvas id="matrix"></canvas>
 
-  <nav>
-    <div class="logo"><i class="fas fa-shield-alt"></i> Collin Aguiar</div>
+  <nav id="navbar">
+    <div class="logo">Collin Aguiar</div>
     <div class="nav-links">
-      <a href="#about"><i class="fas fa-user"></i> About</a>
-      <a href="#projects"><i class="fas fa-code"></i> Projects</a>
-      <a href="#skills"><i class="fas fa-tools"></i> Skills</a>
-      <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
-      <a href="#goals"><i class="fas fa-bullseye"></i> Goals</a>
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
     </div>
   </nav>
 
-  <canvas id="matrix"></canvas>
-
   <section class="hero">
-    <h1 class="glitch" data-text="Collin Aguiar">Collin Aguiar</h1>
-    <p>[placeholder]</p>
+    <h1 class="glitch" data-text="Collin Aguiar">Collin Aguiar</h1>
+    <p class="intro">High‑schooler into cybersecurity & coding. I build things that break—and fix—the web.</p>
     <div class="cta-buttons">
-      <a href="#projects"><i class="fas fa-rocket"></i> See Projects</a>
-      <a href="mailto:collin.j.aguiar@gmail.com"><i class="fas fa-briefcase"></i> Contact Me</a>
+      <a href="#projects">View Projects</a>
+      <a href="#resume-section">Preview Resume</a>
     </div>
   </section>
 
   <section id="about">
-    <h2 class="section-title"><i class="fas fa-user"></i> About Me</h2>
-    <div class="fancy-text-container">
-      <p class="fancy-text">I'm Collin, a passionate high schooler diving deep into cybersecurity and coding. I love building projects that challenge me and learning the latest in tech and security.</p>
+    <div class="bubble">
+      <h2>About Me</h2>
+      <p>I’m Collin, a high schooler obsessed with cybersecurity, coding, and building tools that push limits...</p>
+      <button class="expand-btn">Read More</button>
+      <div class="hidden-content">
+        <p>I build infrastructure, enter CTFs, and push myself to master security and software from the ground up.</p>
+      </div>
     </div>
   </section>
 
   <section id="projects">
-    <h2 class="section-title"><i class="fas fa-code"></i> Featured Projects</h2>
-    <div class="grid">
+    <h2 class="section-title"><i>Featured Projects</i></h2>
 
-      <div class="card fade-up" id="crypto-card" data-tilt data-tilt-max="12" data-tilt-glare>
-        <h3><i class="fas fa-lock"></i> Cryptography Playground</h3>
-        <p>Experiment with modern ciphers including AES, RSA, and custom ciphers. Encrypt, decrypt, and explore cryptographic concepts interactively...</p>
-        <button class="expand-btn">Read More</button>
-        <div class="card-expanded">
-          <p>Full cryptography playground with selectable algorithms, live input/output, and adaptive UI for keys and parameters.</p>
-          <!-- Add cryptography playground app here (insert your full JS app) -->
+    <div class="bubble" id="crypto-card">
+      <h3>Cryptography Playground</h3>
+      <p>Live‑demo different ciphers and encoding schemes right in your browser using real code...</p>
+      <button class="expand-btn">Read More</button>
+      <div class="hidden-content">
+        <label for="crypto-method">Method</label>
+        <select id="crypto-method">
+          <option value="caesar">Caesar Cipher</option>
+          <option value="xor">XOR Cipher</option>
+          <option value="base64">Base64</option>
+        </select>
+
+        <label for="crypto-key" id="crypto-label">Shift (1–26)</label>
+        <input id="crypto-key" type="text" placeholder="3">
+
+        <textarea id="crypto-input" rows="4" placeholder="Enter text…"></textarea>
+        <div class="crypto-buttons">
+          <button onclick="encrypt()">Encrypt</button>
+          <button onclick="decrypt()">Decrypt</button>
+          <button onclick="copyOutput()">Copy Output</button>
         </div>
+        <textarea id="crypto-output" rows="4" placeholder="Result…" readonly></textarea>
       </div>
+    </div>
 
-      <div class="card fade-up" id="hardware-card" data-tilt data-tilt-max="12" data-tilt-glare>
-        <h3><i class="fas fa-desktop"></i> Hardware Setup</h3>
-        <p>Overview of my desktop, server, laptop, and single-board computer with specs, photos, and performance notes...</p>
-        <button class="expand-btn">Read More</button>
-        <div class="card-expanded">
-          <p>Photos and detailed specs for each machine, showcasing my hands-on hardware knowledge and custom setups.</p>
-          <div class="hardware-photos">
-            <img src="assets/desktop.jpg" alt="Desktop" />
-            <img src="assets/server.jpg" alt="Server" />
-            <img src="assets/laptop.jpg" alt="Laptop" />
-            <img src="assets/sbc.jpg" alt="Single Board Computer" />
-          </div>
-        </div>
+    <div class="bubble" id="hardware-card">
+      <h3>Hardware Setup</h3>
+      <p>Specs and photos of my desktop, laptop, server, and SBC—all built and configured by me...</p>
+      <button class="expand-btn">Read More</button>
+      <div class="hidden-content">
+        <ul>
+          <li><strong>Desktop:</strong> Ryzen 5, RTX 4060 Ti, 32 GB RAM</li>
+          <li><strong>Server:</strong> Headless Linux, VMs, Docker</li>
+          <li><strong>Laptop:</strong> Dual‑boot Arch + ChromeOS</li>
+          <li><strong>SBC:</strong> Raspberry Pi with Pi‑Hole & NAS</li>
+        </ul>
       </div>
+    </div>
 
-      <div class="card fade-up" id="website-card" data-tilt data-tilt-max="12" data-tilt-glare>
-        <h3><i class="fas fa-globe"></i> This Website</h3>
-        <p>My portfolio site with interactive demos, animations, and project showcases...</p>
-        <button class="expand-btn">Read More</button>
-        <div class="card-expanded">
-          <p>Built with vanilla JS, CSS3 animations, and canvas effects. Fully responsive and optimized for performance.</p>
-          <a href="https://github.com/CollinAguiar/collinaguiar.github.io" target="_blank" class="github-link"><i class="fab fa-github"></i> View on GitHub</a>
-        </div>
+    <div class="bubble">
+      <h3>This Website</h3>
+      <p>This entire site was built from scratch—no frameworks, all custom code to impress devs...</p>
+      <button class="expand-btn">Read More</button>
+      <div class="hidden-content">
+        <p>Fully responsive, animated, and optimized. View source on GitHub:</p>
+        <a href="https://github.com/CollinAguiar/testing.collinaguiar.github.io" target="_blank" class="download-btn">View on GitHub</a>
       </div>
-
     </div>
   </section>
 
   <section id="skills">
-    <h2 class="section-title"><i class="fas fa-tools"></i> Skills</h2>
-    <div class="grid">
-      <div class="card fade-up" data-tilt>
-        <h3>Programming</h3>
-        <p>Python, Bash, Java, JavaScript, HTML5, CSS3, Rust</p>
-      </div>
-      <div class="card fade-up" data-tilt>
-        <h3>Cybersecurity</h3>
-        <p>Penetration Testing, Ethical Hacking, Vulnerability Analysis</p>
-      </div>
-      <div class="card fade-up" data-tilt>
-        <h3>Server Management</h3>
-        <p>Linux Servers, Game Hosting, Network Security</p>
-      </div>
-      <div class="card fade-up" data-tilt>
-        <h3>Operating Systems</h3>
-        <p>Linux (Arch, Debian, Ubuntu), Windows, macOS</p>
-      </div>
+    <h2 class="section-title"><i>Skills</i></h2>
+    <div class="skill-grid">
+      <div class="bubble"><h3>Programming</h3><p>Python, JavaScript, Bash, Java, C++, Rust...</p></div>
+      <div class="bubble"><h3>Cybersecurity</h3><p>Pen‑testing, CTFs, recon, exploit dev</p></div>
+      <div class="bubble"><h3>Systems</h3><p>Linux servers, virtualization, containers</p></div>
+      <div class="bubble"><h3>Networking</h3><p>TCP/IP, DNS, VPNs, packet analysis</p></div>
     </div>
   </section>
 
-  <section id="goals">
-    <h2 class="section-title"><i class="fas fa-bullseye"></i> Goals</h2>
-    <div class="bubble fade-up" id="goals-bubble">
-      <p>Learn Rust and C for secure system programming. Secure a cybersecurity internship. Contribute to open-source security tools. Get into top CS programs.</p>
-      <button class="expand-btn">Read More</button>
-      <div class="bubble-expanded">
-        <p>These goals guide my learning path and projects. I’m actively studying new languages, engaging in Capture The Flag events, and networking to land my first internship.</p>
-      </div>
+  <section id="resume-section">
+    <h2 class="section-title"><i>Resume</i></h2>
+    <div class="bubble resume-bubble">
+      <iframe src="CollinAguiarResume2025.pdf" width="100%" height="480px"></iframe>
+      <a href="CollinAguiarResume2025.pdf" download class="download-btn">Download PDF</a>
     </div>
   </section>
 
   <section id="contact">
-    <h2 class="section-title"><i class="fas fa-envelope"></i> Get In Touch</h2>
-    <div class="fancy-text-container">
-      <p class="fancy-text">Reach out if you want to collaborate, brainstorm, or just say hi — I’m always up for a good tech chat.</p>
-    </div>
-    <div class="cta-buttons fade-up">
-      <a href="mailto:collin.j.aguiar@gmail.com"><i class="fas fa-paper-plane"></i> Email Me</a>
-      <button id="preview-resume-btn"><i class="fas fa-file-alt"></i> Preview Resume</button>
-    </div>
-    <div id="resume-preview" class="resume-preview">
-      <iframe src="assets/CollinAguiarResume2025.pdf" frameborder="0" width="100%" height="600px"></iframe>
-      <a href="assets/CollinAguiarResume2025.pdf" download class="download-btn"><i class="fas fa-download"></i> Download Resume</a>
-      <button id="close-resume-btn">Close Preview</button>
+    <div class="bubble">
+      <h2>Contact</h2>
+      <p>Reach out if you want to collaborate, brainstorm, or just say hi…</p>
+      <a href="mailto:collin.j.aguiar@gmail.com" class="download-btn">Email Me</a>
     </div>
   </section>
 
   <footer>
-    <p>© 2025 Collin Aguiar. All rights reserved.</p>
+    © 2025 Collin Aguiar
   </footer>
 
   <script src="main.js"></script>

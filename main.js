@@ -1,98 +1,82 @@
-// Intersection Observer fade-up on scroll
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) e.target.classList.add('is-visible')
-  })
-});
-document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
-
-// Vanilla Tilt initialization
-VanillaTilt.init(document.querySelectorAll('[data-tilt]'), {
-  max: 12,
-  speed: 600,
-  glare: true,
-  "max-glare": 0.35,
-});
-
-// Matrix rain
-const c = document.getElementById('matrix');
-const ctx = c.getContext('2d');
-let w, h, fontSize = 14, columns, drops;
-
-function resize() {
-  w = c.width = window.innerWidth;
-  h = c.height = window.innerHeight;
-  columns = Math.floor(w / fontSize);
-  drops = Array(columns).fill(1);
+// matrix effect
+const c=document.getElementById('matrix'),
+      ctx=c.getContext('2d');
+c.width=innerWidth; c.height=innerHeight;
+const fontSize=18,
+      columns=Math.floor(c.width/fontSize),
+      drops=Array(columns).fill(0),
+      charset='01';
+function draw(){
+  ctx.fillStyle='rgba(0,0,0,0.05)';
+  ctx.fillRect(0,0,c.width,c.height);
+  ctx.fillStyle='#ff003c';
+  ctx.font=fontSize+'px monospace';
+  for(let i=0;i<columns;i++){
+    const text=charset[Math.floor(Math.random()*charset.length)];
+    ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+    drops[i] = drops[i]*fontSize>c.height && Math.random()>0.98 ? 0 : drops[i]+1;
+  }
 }
-resize();
-window.addEventListener('resize', resize);
+setInterval(draw,50);
+window.onresize = ()=>{c.width=innerWidth; c.height=innerHeight;};
 
-const chars = '01';
-
-function draw() {
-  ctx.fillStyle = 'rgba(0,0,0,0.05)';
-  ctx.fillRect(0, 0, w, h);
-  ctx.fillStyle = '#ff003c';
-  ctx.font = fontSize + 'px monospace';
-
-  for (let i = 0; i < drops.length; i++) {
-    const text = chars[Math.floor(Math.random() * chars.length)];
-    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-    if (drops[i] * fontSize > h && Math.random() > 0.975) drops[i] = 0;
-    drops[i]++;
-  }
-  requestAnimationFrame(draw);
-}
-draw();
-
-// Hide nav on scroll down, show on scroll up
-let lastScrollY = window.pageYOffset;
-const nav = document.querySelector('nav');
-const footer = document.querySelector('footer');
-window.addEventListener('scroll', () => {
-  let currentScrollY = window.pageYOffset;
-  if (currentScrollY > lastScrollY && currentScrollY > 100) {
-    nav.classList.add('hidden');
-  } else {
-    nav.classList.remove('hidden');
-  }
-  lastScrollY = currentScrollY;
-
-  // Show footer if scrolled down, hide if top
-  if (currentScrollY > 50) {
-    footer.style.display = 'block';
-  } else {
-    footer.style.display = 'none';
-  }
+// nav hide on scroll
+let lastY=0;
+const nav=document.getElementById('navbar');
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY;
+  nav.style.top = y>lastY&&y>100 ? '-80px' : '0';
+  lastY=y;
 });
-footer.style.display = 'none';
 
-// Expand cards and bubbles on button click
-document.querySelectorAll('.expand-btn').forEach(button => {
-  button.addEventListener('click', e => {
-    const card = e.target.closest('.card') || e.target.closest('.bubble');
-    if (!card) return;
-    card.classList.toggle('expanded');
-    if (card.classList.contains('expanded')) {
-      button.textContent = 'Show Less';
-    } else {
-      button.textContent = 'Read More';
-    }
+// expand buttons
+document.querySelectorAll('.expand-btn').forEach(btn=>{
+  btn.onclick=e=>{
+    const b=e.target.closest('.bubble');
+    b.classList.toggle('expanded');
+    e.target.textContent = b.classList.contains('expanded') ? 'Show Less' : 'Read More';
+    if(b.classList.contains('expanded')) setTimeout(()=>b.scrollIntoView({behavior:'smooth',block:'start'}),300);
+  };
+});
+
+// crypto functionality
+const methodEl=document.getElementById('crypto-method'),
+      labelEl=document.getElementById('crypto-label'),
+      keyEl=document.getElementById('crypto-key'),
+      inputEl=document.getElementById('crypto-input'),
+      outputEl=document.getElementById('crypto-output');
+methodEl?.addEventListener('change',()=>{
+  labelEl.textContent = methodEl.value==='caesar' ? 'Shift (1–26)' : 'Key/Password';
+});
+function caesar(str,shift,dec=false){
+  shift = parseInt(shift);
+  if(dec) shift = (26-shift)%26;
+  return str.replace(/[a-z]/gi,c=>{
+    const base = c<='Z'?65:97;
+    return String.fromCharCode((c.charCodeAt(0)-base+shift)%26+base);
   });
-});
-
-// Resume preview toggle
-const previewBtn = document.getElementById('preview-resume-btn');
-const resumePreview = document.getElementById('resume-preview');
-const closeResumeBtn = document.getElementById('close-resume-btn');
-
-previewBtn.addEventListener('click', () => {
-  resumePreview.style.display = 'block';
-  previewBtn.style.display = 'none';
-});
-
-closeResumeBtn.addEventListener('click', () => {
-  resumePreview.style.display = 'none';
-  previewBtn.style.display = 'inline-flex';
-});
+}
+window.encrypt = ()=>{
+  let m=methodEl.value, k=keyEl.value, txt=inputEl.value;
+  if(m==='caesar') outputEl.value = caesar(txt,k);
+  else if(m==='xor') {
+    let res='';
+    for(let i=0;i<txt.length;i++) res += String.fromCharCode(txt.charCodeAt(i)^k.charCodeAt(i%k.length));
+    outputEl.value = res;
+  } else {
+    outputEl.value = btoa(txt);
+  }
+};
+window.decrypt = ()=>{
+  let m=methodEl.value, k=keyEl.value, txt=inputEl.value;
+  if(m==='caesar') outputEl.value = caesar(txt,k,true);
+  else if(m==='xor') window.encrypt(); // symmetric
+  else {
+    try { outputEl.value = atob(txt); }
+    catch { outputEl.value = 'Invalid Base64'; }
+  }
+};
+window.copyOutput = ()=>{
+  outputEl.select();
+  document.execCommand('copy');
+};
