@@ -1,16 +1,19 @@
-// Navbar hide/show on scroll
 let lastScroll = 0;
 const navbar = document.getElementById('navbar');
+const footer = document.getElementById('footer');
 window.addEventListener('scroll', () => {
   const currentScroll = window.pageYOffset;
   if (currentScroll <= 0) {
     navbar.classList.remove('hide');
+    footer.style.display = 'none';
     return;
   }
   if (currentScroll > lastScroll) {
     navbar.classList.add('hide');
+    footer.style.display = 'block';
   } else {
     navbar.classList.remove('hide');
+    footer.style.display = 'none';
   }
   lastScroll = currentScroll;
 });
@@ -23,7 +26,7 @@ const io = new IntersectionObserver(entries => {
 });
 document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
 
-// Initialize Vanilla Tilt for bubbles
+// Vanilla Tilt for bubbles
 VanillaTilt.init(document.querySelectorAll('.bubble'), {
   max: 10,
   speed: 400,
@@ -32,7 +35,7 @@ VanillaTilt.init(document.querySelectorAll('.bubble'), {
   scale: 1.05
 });
 
-// Matrix background
+// Matrix background animation
 const matrix = document.getElementById('matrix');
 const ctx = matrix.getContext('2d');
 let w, h;
@@ -221,18 +224,16 @@ decryptBtn.addEventListener('click', () => {
   }
 });
 
-// Load CryptoJS from CDN for AES (insert script dynamically)
+// Load CryptoJS from CDN for AES encryption
 const cryptoScript = document.createElement('script');
 cryptoScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js';
-cryptoScript.onload = () => {
-  // Now AES encrypt/decrypt works
-};
 document.head.appendChild(cryptoScript);
 
 // Network Visualizer animation
 const visualizerContainer = document.getElementById('network-visualizer');
 
 function createPacket() {
+  if (!visualizerContainer) return;
   const packet = document.createElement('div');
   packet.className = 'packet';
   packet.style.left = Math.random() * 100 + '%';
@@ -244,7 +245,6 @@ function createPacket() {
 }
 
 function startVisualizer() {
-  if (!visualizerContainer) return;
   setInterval(createPacket, 400);
 }
 
