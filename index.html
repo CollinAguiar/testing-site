@@ -2,17 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Collin Aguiar's Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Collin Aguiar | Portfolio</title>
   <link rel="stylesheet" href="main.css" />
-  <script defer src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.7.0/dist/vanilla-tilt.min.js"></script>
-  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-  <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <nav id="topNav">
+  <nav id="navbar">
     <div class="logo"><i class="fas fa-shield-alt"></i> Collin Aguiar</div>
     <div class="nav-links">
       <a href="#about"><i class="fas fa-user"></i> About</a>
@@ -22,87 +19,67 @@
     </div>
   </nav>
 
-  <canvas id="matrix"></canvas>
-
   <section class="hero">
-    <h1 class="glitch" data-text="Cybersecurity Portfolio">Cybersecurity Portfolio</h1>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+    <h1>[placeholder]</h1>
+    <p>[placeholder]</p>
     <div class="cta-buttons">
-      <a href="#projects"><i class="fas fa-rocket"></i> Explore Projects</a>
-      <a href="mailto:collin@example.com"><i class="fas fa-briefcase"></i> Contact Me</a>
+      <a href="#projects"><i class="fas fa-rocket"></i> [placeholder]</a>
+      <a href="mailto:collin@example.com"><i class="fas fa-briefcase"></i> [placeholder]</a>
     </div>
   </section>
 
   <section id="about">
-    <h2 class="section-title"><i class="fas fa-user"></i> About Me</h2>
-    <p class="fade-up">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+    <h2><i class="fas fa-user"></i> About Me</h2>
+    <p>[placeholder]</p>
   </section>
 
   <section id="projects">
-    <h2 class="section-title"><i class="fas fa-code"></i> Projects</h2>
+    <h2><i class="fas fa-code"></i> Projects</h2>
     <div class="grid">
-      <div class="card project-card fade-up" data-tilt>
-        <h3><i class="fas fa-bug"></i> Vulnerability Scanner</h3>
-        <p class="preview">Quickly identifies common web vulnerabilities.</p>
-        <div class="full hidden">
-          <py-script>
-import random
-def scan():
-    vulns = ['SQL Injection', 'XSS', 'Open Redirect', 'CSRF', 'Path Traversal']
-    found = random.sample(vulns, k=random.randint(1, 3))
-    print("Vulnerabilities Found:")
-    for v in found:
-        print(f"- {v}")
-scan()
-          </py-script>
+      <div class="card" data-id="project1">
+        <h3><i class="fas fa-terminal"></i> Packet Visualizer</h3>
+        <p class="preview">[placeholder]</p>
+        <div class="details">
+          <p>[full demo or explanation for the packet visualizer project]</p>
         </div>
       </div>
-
-      <div class="card project-card fade-up" data-tilt>
-        <h3><i class="fas fa-lock"></i> Crypto Demo</h3>
-        <p class="preview">Compute SHA‑256 hashes instantly.</p>
-        <div class="full hidden">
-          <py-script>
-from hashlib import sha256
-text = "Secure message"
-hash_val = sha256(text.encode()).hexdigest()
-print(f"SHA-256 of '{text}':\n{hash_val}")
-          </py-script>
+      <div class="card" data-id="project2">
+        <h3><i class="fas fa-key"></i> Crypto Tool</h3>
+        <p class="preview">[placeholder]</p>
+        <div class="details">
+          <p>[full demo or explanation for the crypto tool]</p>
         </div>
       </div>
-
-      <div class="card project-card fade-up" data-tilt>
-        <h3><i class="fas fa-keyboard"></i> Password Strength</h3>
-        <p class="preview">Instant feedback on password security.</p>
-        <div class="full hidden">
-          <input id="pwInput" type="password" placeholder="Enter password">
-          <button onclick="checkPassword()">Check Strength</button>
-          <pre id="pwOutput"></pre>
+      <div class="card" data-id="project3">
+        <h3><i class="fas fa-code-branch"></i> This Website</h3>
+        <p class="preview">[placeholder]</p>
+        <div class="details">
+          <p>Full source code is available on <a href="https://github.com/CollinAguiar/collinaguiar.github.io" target="_blank">GitHub</a>.</p>
         </div>
       </div>
     </div>
   </section>
 
   <section id="skills">
-    <h2 class="section-title"><i class="fas fa-tools"></i> Skills</h2>
+    <h2><i class="fas fa-tools"></i> Skills</h2>
     <div class="grid">
-      <div class="card fade-up" data-tilt><h3>Python</h3><p>Experienced in scripting, automation, and security tools.</p></div>
-      <div class="card fade-up" data-tilt><h3>Web Security</h3><p>Knowledgeable in OWASP TOP 10 and vulnerability assessment.</p></div>
-      <div class="card fade-up" data-tilt><h3>Linux</h3><p>Comfortable with server setup, permissions, and scripting.</p></div>
+      <div class="card"><h3>[placeholder]</h3><p>[placeholder]</p></div>
+      <div class="card"><h3>[placeholder]</h3><p>[placeholder]</p></div>
+      <div class="card"><h3>[placeholder]</h3><p>[placeholder]</p></div>
     </div>
   </section>
 
   <section id="contact">
-    <h2 class="section-title"><i class="fas fa-envelope"></i> Get In Touch</h2>
-    <p class="fade-up">Reach out for collaborations, internships, or security challenges.</p>
-    <div class="cta-buttons fade-up">
-      <a href="mailto:collin.j.aguiar@gmail.com"><i class="fas fa-paper-plane"></i> Email Me</a>
-      <a href="CollinAguiarResume2025.pdf" target="_blank"><i class="fas fa-file-download"></i> Download Resume</a>
+    <h2><i class="fas fa-envelope"></i> Get In Touch</h2>
+    <p>[placeholder]</p>
+    <div class="cta-buttons">
+      <a href="mailto:collin.j.aguiar@gmail.com"><i class="fas fa-paper-plane"></i> [placeholder]</a>
+      <a href="CollinAguiarResume2025.pdf" target="_blank"><i class="fas fa-file-download"></i> [placeholder]</a>
     </div>
   </section>
 
   <footer>
-    <p>© 2025 Collin Aguiar. All rights reserved.</p>
+    <p>[placeholder]</p>
   </footer>
 
   <script src="main.js"></script>
