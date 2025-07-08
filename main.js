@@ -1,347 +1,233 @@
-// MATRIX RAIN ANIMATION
+// Matrix rain effect
 const canvas = document.getElementById('matrix');
 const ctx = canvas.getContext('2d');
 let width, height;
-let fontSize = 14;
 let columns;
-let drops;
+let drops = [];
+const fontSize = 16;
+const chars = '01';
 
-function resizeCanvas() {
+function resize() {
   width = canvas.width = window.innerWidth;
   height = canvas.height = window.innerHeight;
   columns = Math.floor(width / fontSize);
   drops = Array(columns).fill(1);
 }
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
+window.addEventListener('resize', resize);
+resize();
 
-const matrixChars = '01';
-
-function drawMatrix() {
-  ctx.fillStyle = 'rgba(10,10,10,0.05)';
+function draw() {
+  ctx.fillStyle = 'rgba(10,10,10,0.07)';
   ctx.fillRect(0, 0, width, height);
   ctx.fillStyle = '#ff003c';
   ctx.font = fontSize + 'px monospace';
   for (let i = 0; i < drops.length; i++) {
-    const char = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
-    ctx.fillText(char, i * fontSize, drops[i] * fontSize);
-    if (drops[i] * fontSize > height && Math.random() > 0.975) {
-      drops[i] = 0;
-    }
+    const text = chars.charAt(Math.floor(Math.random() * chars.length));
+    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+    if (drops[i] * fontSize > height && Math.random() > 0.975) drops[i] = 0;
     drops[i]++;
   }
-  requestAnimationFrame(drawMatrix);
+  requestAnimationFrame(draw);
 }
-drawMatrix();
+draw();
 
-// NAVBAR HIDE ON SCROLL
-let lastScrollY = window.scrollY;
-const navBar = document.getElementById('navBar');
-const footer = document.querySelector('footer');
-
-window.addEventListener('scroll', () => {
-  const currentScrollY = window.scrollY;
-  if (currentScrollY > lastScrollY && currentScrollY > 100) {
-    navBar.classList.add('hidden');
-    footer.style.display = 'block';
-  } else {
-    navBar.classList.remove('hidden');
-    footer.style.display = 'none';
-  }
-  lastScrollY = currentScrollY;
+// Vanilla Tilt initialization
+VanillaTilt.init(document.querySelectorAll('.card[data-tilt]'), {
+  max: 12,
+  speed: 600,
+  glare: true,
+  'max-glare': 0.6,
+  scale: 1.03,
+  easing: 'cubic-bezier(.03,.98,.52,.99)',
 });
 
-// EXPAND / COLLAPSE CARDS LOGIC
-const cards = document.querySelectorAll('.preview-card');
-cards.forEach(card => {
+// Scroll-based fade up animation
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) entry.target.classList.add('is-visible');
+  });
+});
+document.querySelectorAll('.fade-up').forEach((el) => io.observe(el));
+
+// Hide nav bar on scroll down, show on scroll up
+let lastScrollY = window.scrollY;
+const nav = document.querySelector('nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > lastScrollY && window.scrollY > 100) {
+    nav.classList.add('hidden');
+  } else {
+    nav.classList.remove('hidden');
+  }
+  lastScrollY = window.scrollY;
+});
+
+// Card expand/collapse logic
+document.querySelectorAll('.preview-card').forEach((card) => {
   const btn = card.querySelector('.expand-btn');
-  btn.addEventListener('click', e => {
+  const content = card.querySelector('.card-expanded-content');
+
+  btn.addEventListener('click', (e) => {
     e.stopPropagation();
-    const isExpanded = card.classList.contains('expanded');
-    if (isExpanded) {
+    if (card.classList.contains('expanded')) {
       card.classList.remove('expanded');
+      content.style.display = 'none';
       btn.textContent = 'READ MORE';
-      card.style.maxHeight = '8.2rem';
-      card.style.overflowY = 'hidden';
     } else {
-      // Collapse any other expanded cards
-      cards.forEach(c => {
-        if (c !== card) {
-          c.classList.remove('expanded');
-          const otherBtn = c.querySelector('.expand-btn');
-          if(otherBtn) otherBtn.textContent = 'READ MORE';
-          c.style.maxHeight = '8.2rem';
-          c.style.overflowY = 'hidden';
-        }
+      // Close other expanded cards
+      document.querySelectorAll('.preview-card.expanded').forEach((other) => {
+        other.classList.remove('expanded');
+        other.querySelector('.card-expanded-content').style.display = 'none';
+        other.querySelector('.expand-btn').textContent = 'READ MORE';
       });
+
       card.classList.add('expanded');
-      btn.textContent = 'SHOW LESS';
-      card.style.maxHeight = '800px';
-      card.style.overflowY = 'auto';
+      content.style.display = 'block';
+      btn.textContent = 'COLLAPSE';
+      // If the card has interactive playgrounds, initialize them
+      if (card.id === 'crypto-card') initCryptoPlayground();
     }
   });
 });
 
-// CRYPTOGRAPHY PLAYGROUND UI SETUP
-const cryptoCard = document.getElementById('crypto-playground-card');
-const playgroundContainer = document.getElementById('crypto-playground');
+// Cryptography playground
+function initCryptoPlayground() {
+  const container = document.getElementById('crypto-playground');
+  if (container.dataset.inited) return;
+  container.dataset.inited = 'true';
 
-function createCryptoPlayground() {
-  // Clear previous
-  playgroundContainer.innerHTML = '';
-
-  const controlsDiv = document.createElement('div');
-  controlsDiv.style.display = 'flex';
-  controlsDiv.style.flexDirection = 'column';
-  controlsDiv.style.gap = '1rem';
-  controlsDiv.style.marginTop = '1rem';
-  controlsDiv.style.userSelect = 'none';
-
-  // Dropdown: Method
-  const methodLabel = document.createElement('label');
-  methodLabel.textContent = 'Encryption Method:';
-  methodLabel.style.color = '#ff003c';
-  methodLabel.style.fontWeight = '700';
-
-  const methodSelect = document.createElement('select');
-  methodSelect.style.padding = '0.4rem';
-  methodSelect.style.borderRadius = '6px';
-  methodSelect.style.border = '1px solid #ff003c';
-  methodSelect.style.background = '#110000';
-  methodSelect.style.color = '#eee';
-  methodSelect.style.fontFamily = 'Share Tech Mono, monospace';
-  methodSelect.style.fontWeight = '700';
-  methodSelect.innerHTML = `
-    <option value="caesar">Caesar Cipher</option>
-    <option value="vigenere">Vigenère Cipher</option>
-    <option value="aes">AES (Advanced Encryption Standard)</option>
+  container.innerHTML = `
+    <div class="crypto-controls">
+      <label for="cipher-select">Cipher:</label>
+      <select id="cipher-select">
+        <option value="caesar">Caesar Cipher</option>
+        <option value="xor">XOR Cipher</option>
+        <option value="base64">Base64 Encode/Decode</option>
+      </select>
+    </div>
+    <div class="crypto-controls">
+      <label for="key-input" id="key-label">Shift (1-26):</label>
+      <input id="key-input" type="text" placeholder="Shift (1-26)" maxlength="2" />
+    </div>
+    <div class="crypto-controls">
+      <label for="input-text">Input Text:</label>
+      <textarea id="input-text" rows="5" placeholder="Enter text here..."></textarea>
+    </div>
+    <div class="crypto-controls">
+      <label for="output-text">Output Text:</label>
+      <textarea id="output-text" rows="5" readonly></textarea>
+    </div>
+    <div class="crypto-controls buttons-row">
+      <button id="encrypt-btn">Encrypt</button>
+      <button id="decrypt-btn">Decrypt</button>
+      <button id="copy-btn">Copy Output</button>
+    </div>
   `;
 
-  // Input for key/shift/password
-  const keyLabel = document.createElement('label');
-  keyLabel.textContent = 'Key/Password:';
-  keyLabel.style.color = '#ff003c';
-  keyLabel.style.fontWeight = '700';
+  const cipherSelect = document.getElementById('cipher-select');
+  const keyInput = document.getElementById('key-input');
+  const keyLabel = document.getElementById('key-label');
+  const inputText = document.getElementById('input-text');
+  const outputText = document.getElementById('output-text');
+  const encryptBtn = document.getElementById('encrypt-btn');
+  const decryptBtn = document.getElementById('decrypt-btn');
+  const copyBtn = document.getElementById('copy-btn');
 
-  const keyInput = document.createElement('input');
-  keyInput.type = 'text';
-  keyInput.style.padding = '0.5rem';
-  keyInput.style.borderRadius = '6px';
-  keyInput.style.border = '1px solid #ff003c';
-  keyInput.style.background = '#110000';
-  keyInput.style.color = '#eee';
-  keyInput.style.fontFamily = 'Share Tech Mono, monospace';
-  keyInput.style.fontWeight = '700';
-
-  // Textarea input/output
-  const textInputLabel = document.createElement('label');
-  textInputLabel.textContent = 'Input Text:';
-  textInputLabel.style.color = '#ff003c';
-  textInputLabel.style.fontWeight = '700';
-
-  const textInput = document.createElement('textarea');
-  textInput.rows = 5;
-  textInput.style.padding = '0.5rem';
-  textInput.style.borderRadius = '6px';
-  textInput.style.border = '1px solid #ff003c';
-  textInput.style.background = '#110000';
-  textInput.style.color = '#eee';
-  textInput.style.fontFamily = 'Share Tech Mono, monospace';
-  textInput.style.fontWeight = '700';
-  textInput.style.resize = 'vertical';
-
-  const outputLabel = document.createElement('label');
-  outputLabel.textContent = 'Output Text:';
-  outputLabel.style.color = '#ff003c';
-  outputLabel.style.fontWeight = '700';
-
-  const outputArea = document.createElement('textarea');
-  outputArea.rows = 5;
-  outputArea.style.padding = '0.5rem';
-  outputArea.style.borderRadius = '6px';
-  outputArea.style.border = '1px solid #ff003c';
-  outputArea.style.background = '#110000';
-  outputArea.style.color = '#eee';
-  outputArea.style.fontFamily = 'Share Tech Mono, monospace';
-  outputArea.style.fontWeight = '700';
-  outputArea.style.resize = 'vertical';
-  outputArea.readOnly = true;
-
-  // Buttons Encrypt / Decrypt
-  const buttonsDiv = document.createElement('div');
-  buttonsDiv.style.display = 'flex';
-  buttonsDiv.style.gap = '1rem';
-  buttonsDiv.style.marginTop = '1rem';
-
-  const encryptBtn = document.createElement('button');
-  encryptBtn.textContent = 'Encrypt';
-  encryptBtn.className = 'btn btn-glow';
-  encryptBtn.style.flex = '1';
-
-  const decryptBtn = document.createElement('button');
-  decryptBtn.textContent = 'Decrypt';
-  decryptBtn.className = 'btn btn-glow';
-  decryptBtn.style.flex = '1';
-
-  buttonsDiv.appendChild(encryptBtn);
-  buttonsDiv.appendChild(decryptBtn);
-
-  controlsDiv.appendChild(methodLabel);
-  controlsDiv.appendChild(methodSelect);
-  controlsDiv.appendChild(keyLabel);
-  controlsDiv.appendChild(keyInput);
-  controlsDiv.appendChild(textInputLabel);
-  controlsDiv.appendChild(textInput);
-  controlsDiv.appendChild(outputLabel);
-  controlsDiv.appendChild(outputArea);
-  controlsDiv.appendChild(buttonsDiv);
-
-  playgroundContainer.appendChild(controlsDiv);
-
-  // Update key label placeholder based on method
-  function updateKeyPlaceholder() {
-    const method = methodSelect.value;
-    if (method === 'caesar') {
+  cipherSelect.addEventListener('change', () => {
+    if (cipherSelect.value === 'caesar') {
       keyLabel.textContent = 'Shift (1-26):';
-      keyInput.placeholder = '3';
+      keyInput.placeholder = 'Shift (1-26)';
       keyInput.type = 'number';
       keyInput.min = 1;
       keyInput.max = 26;
-    } else if (method === 'vigenere') {
-      keyLabel.textContent = 'Key (letters only):';
-      keyInput.placeholder = 'SECRET';
+    } else if (cipherSelect.value === 'xor') {
+      keyLabel.textContent = 'Key (text):';
+      keyInput.placeholder = 'Key';
       keyInput.type = 'text';
       keyInput.removeAttribute('min');
       keyInput.removeAttribute('max');
-    } else if (method === 'aes') {
-      keyLabel.textContent = 'Password:';
-      keyInput.placeholder = 'Enter password';
-      keyInput.type = 'password';
-      keyInput.removeAttribute('min');
-      keyInput.removeAttribute('max');
+    } else {
+      keyLabel.textContent = 'N/A';
+      keyInput.placeholder = '';
+      keyInput.type = 'text';
+      keyInput.value = '';
+      keyInput.disabled = true;
     }
-  }
-  updateKeyPlaceholder();
-  methodSelect.addEventListener('change', () => {
-    updateKeyPlaceholder();
-    outputArea.value = '';
   });
+  cipherSelect.dispatchEvent(new Event('change'));
 
-  // Caesar Cipher functions
-  function caesarEncrypt(text, shift) {
-    shift = parseInt(shift);
-    if (isNaN(shift) || shift < 1 || shift > 26) return 'Shift must be 1-26';
-    return text.replace(/[a-z]/gi, c => {
+  function caesarShift(str, shift, decrypt = false) {
+    if (decrypt) shift = (26 - shift) % 26;
+    return str.replace(/[a-z]/gi, (c) => {
       const base = c <= 'Z' ? 65 : 97;
       return String.fromCharCode(((c.charCodeAt(0) - base + shift) % 26) + base);
     });
   }
-  function caesarDecrypt(text, shift) {
-    shift = parseInt(shift);
-    if (isNaN(shift) || shift < 1 || shift > 26) return 'Shift must be 1-26';
-    return text.replace(/[a-z]/gi, c => {
-      const base = c <= 'Z' ? 65 : 97;
-      return String.fromCharCode(((c.charCodeAt(0) - base - shift + 26) % 26) + base);
-    });
+
+  function xorCipher(text, key, decrypt = false) {
+    let result = '';
+    for (let i = 0; i < text.length; i++) {
+      result += String.fromCharCode(text.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+    }
+    return result;
   }
 
-  // Vigenere Cipher functions
-  function vigenereEncrypt(text, key) {
-    if (!/^[a-zA-Z]+$/.test(key)) return 'Key must be letters only';
-    key = key.toUpperCase();
-    let j = 0;
-    return text.replace(/[a-z]/gi, c => {
-      const base = c <= 'Z' ? 65 : 97;
-      const k = key.charCodeAt(j % key.length) - 65;
-      j++;
-      return String.fromCharCode(((c.charCodeAt(0) - base + k) % 26) + base);
-    });
+  function base64Encode(str) {
+    return btoa(str);
   }
-  function vigenereDecrypt(text, key) {
-    if (!/^[a-zA-Z]+$/.test(key)) return 'Key must be letters only';
-    key = key.toUpperCase();
-    let j = 0;
-    return text.replace(/[a-z]/gi, c => {
-      const base = c <= 'Z' ? 65 : 97;
-      const k = key.charCodeAt(j % key.length) - 65;
-      j++;
-      return String.fromCharCode(((c.charCodeAt(0) - base - k + 26) % 26) + base);
-    });
-  }
-
-  // AES Encryption/Decryption using Web Crypto API
-  async function aesEncrypt(text, password) {
-    if (!password) return 'Password required';
-    const pwUtf8 = new TextEncoder().encode(password);
-    const pwHash = await crypto.subtle.digest('SHA-256', pwUtf8);
-    const iv = crypto.getRandomValues(new Uint8Array(12));
-    const alg = { name: 'AES-GCM', iv: iv };
-    const key = await crypto.subtle.importKey('raw', pwHash, alg, false, ['encrypt']);
-    const encoded = new TextEncoder().encode(text);
-    const encrypted = await crypto.subtle.encrypt(alg, key, encoded);
-    const buffer = new Uint8Array(encrypted);
-    const combined = new Uint8Array(iv.length + buffer.length);
-    combined.set(iv);
-    combined.set(buffer, iv.length);
-    return btoa(String.fromCharCode(...combined));
-  }
-
-  async function aesDecrypt(data, password) {
-    if (!password) return 'Password required';
+  function base64Decode(str) {
     try {
-      const raw = atob(data);
-      const combined = new Uint8Array(raw.length);
-      for (let i = 0; i < raw.length; i++) combined[i] = raw.charCodeAt(i);
-      const iv = combined.slice(0, 12);
-      const encrypted = combined.slice(12);
-      const pwUtf8 = new TextEncoder().encode(password);
-      const pwHash = await crypto.subtle.digest('SHA-256', pwUtf8);
-      const alg = { name: 'AES-GCM', iv: iv };
-      const key = await crypto.subtle.importKey('raw', pwHash, alg, false, ['decrypt']);
-      const decrypted = await crypto.subtle.decrypt(alg, key, encrypted);
-      return new TextDecoder().decode(decrypted);
+      return atob(str);
     } catch {
-      return 'Decryption failed or invalid input';
+      return 'Invalid Base64 input!';
     }
   }
 
-  encryptBtn.addEventListener('click', async () => {
-    const method = methodSelect.value;
-    const key = keyInput.value.trim();
-    const text = textInput.value;
-    if (!text) {
-      outputArea.value = 'Enter input text';
-      return;
-    }
-    if (method === 'caesar') {
-      outputArea.value = caesarEncrypt(text, key);
-    } else if (method === 'vigenere') {
-      outputArea.value = vigenereEncrypt(text, key);
-    } else if (method === 'aes') {
-      outputArea.value = 'Encrypting...';
-      const result = await aesEncrypt(text, key);
-      outputArea.value = result;
+  encryptBtn.addEventListener('click', () => {
+    const cipher = cipherSelect.value;
+    let input = inputText.value;
+    if (!input) return;
+    if (cipher === 'caesar') {
+      let shift = parseInt(keyInput.value);
+      if (isNaN(shift) || shift < 1 || shift > 26) {
+        alert('Shift must be between 1 and 26');
+        return;
+      }
+      outputText.value = caesarShift(input, shift);
+    } else if (cipher === 'xor') {
+      if (!keyInput.value) {
+        alert('Key required for XOR');
+        return;
+      }
+      outputText.value = xorCipher(input, keyInput.value);
+    } else if (cipher === 'base64') {
+      outputText.value = base64Encode(input);
     }
   });
 
-  decryptBtn.addEventListener('click', async () => {
-    const method = methodSelect.value;
-    const key = keyInput.value.trim();
-    const text = textInput.value;
-    if (!text) {
-      outputArea.value = 'Enter input text';
-      return;
+  decryptBtn.addEventListener('click', () => {
+    const cipher = cipherSelect.value;
+    let input = inputText.value;
+    if (!input) return;
+    if (cipher === 'caesar') {
+      let shift = parseInt(keyInput.value);
+      if (isNaN(shift) || shift < 1 || shift > 26) {
+        alert('Shift must be between 1 and 26');
+        return;
+      }
+      outputText.value = caesarShift(input, shift, true);
+    } else if (cipher === 'xor') {
+      if (!keyInput.value) {
+        alert('Key required for XOR');
+        return;
+      }
+      outputText.value = xorCipher(input, keyInput.value);
+    } else if (cipher === 'base64') {
+      outputText.value = base64Decode(input);
     }
-    if (method === 'caesar') {
-      outputArea.value = caesarDecrypt(text, key);
-    } else if (method === 'vigenere') {
-      outputArea.value = vigenereDecrypt(text, key);
-    } else if (method === 'aes') {
-      outputArea.value = 'Decrypting...';
-      const result = await aesDecrypt(text, key);
-      outputArea.value = result;
-    }
+  });
+
+  copyBtn.addEventListener('click', () => {
+    outputText.select();
+    document.execCommand('copy');
   });
 }
-
-createCryptoPlayground();
