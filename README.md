@@ -9,4 +9,4 @@ This is my personal portfolio website. It has sections for about me, projects, s
 - FontAwesome for icons  
 - Google Fonts
 
-Feel free to use or tweak it however you want.
+Feel free to use or tweak it however you want!
