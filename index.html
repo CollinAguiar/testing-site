@@ -35,12 +35,13 @@
 <section id="projects">
   <h2 class="section-title"><i class="fas fa-code"></i> Projects</h2>
   <div class="grid">
+
     <div class="card expandable fade-up" data-tilt data-tilt-max="8" data-tilt-glare id="vuln-card">
       <h3><i class="fas fa-network-wired"></i> Vulnerability Scanner</h3>
       <button class="expand-btn">Launch Tool</button>
       <div class="expansion-content" id="vuln-tool">
         <form id="vulnForm">
-          <input type="text" id="vulnUrl" placeholder="Enter site URL..." required />
+          <input type="text" id="vulnUrl" placeholder="Enter URL or IP address..." required />
           <button type="submit">Scan</button>
         </form>
         <div id="vulnResults"></div>
@@ -55,8 +56,10 @@
         <select id="cipher">
           <option value="caesar">Caesar</option>
           <option value="vigenere">Vigenère</option>
+          <option value="base64">Base64</option>
+          <option value="xor">XOR Cipher</option>
         </select>
-        <input type="text" id="key" placeholder="Key/password" />
+        <input type="text" id="key" placeholder="Shift (1-26)" />
         <div class="crypto-buttons">
           <button id="encrypt">Encrypt</button>
           <button id="decrypt">Decrypt</button>
@@ -64,6 +67,32 @@
         <pre id="output"></pre>
       </div>
     </div>
+
+    <div class="card expandable fade-up" data-tilt data-tilt-max="8" data-tilt-glare id="network-card">
+      <h3><i class="fas fa-project-diagram"></i> Network Packet Visualizer</h3>
+      <button class="expand-btn">Launch Tool</button>
+      <div class="expansion-content" id="network-tool">
+        <div class="network-container">
+          <div class="packet" id="packet1">Packet 1</div>
+          <div class="packet" id="packet2">Packet 2</div>
+          <div class="packet" id="packet3">Packet 3</div>
+          <div class="packet" id="packet4">Packet 4</div>
+          <div class="packet" id="packet5">Packet 5</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card expandable fade-up" data-tilt data-tilt-max="8" data-tilt-glare id="website-card">
+      <h3><i class="fas fa-globe"></i> This Website</h3>
+      <button class="expand-btn">Launch Tool</button>
+      <div class="expansion-content" id="website-tool">
+        <p>Check out the code on GitHub:</p>
+        <a href="https://github.com/CollinAguiar/portfolio" target="_blank" class="github-link">
+          <i class="fab fa-github"></i> https://github.com/CollinAguiar/portfolio
+        </a>
+      </div>
+    </div>
+
   </div>
 </section>
 
